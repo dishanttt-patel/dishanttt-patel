@@ -1,89 +1,98 @@
 #!/usr/bin/env python3
 """
 make_ascii_svg.py
-Converts full profile photo into a clean, well-proportioned ASCII portrait SVG:
-1. Accommodates the ENTIRE photo (head, face, glasses, neck, shoulders, shirt).
-2. Uses standard 85-column terminal resolution for a clean, non-cluttered portrait.
-3. Renders animated multi-tone cyan/blue SMIL SVG card.
+Converts prepped photo (assets/source-prepped.png) into a crisp, 100% accurate ASCII SVG portrait.
+Uses exact 1-to-1 color-to-character mapping:
+Each distinct luminance/color bucket maps to ONE unique ASCII character and ONE unique color!
 """
 
 import os
 import sys
 import argparse
 import html
-import cv2
 import numpy as np
 from PIL import Image
 
-# Clean, balanced character density ramp
-ASCII_RAMP = [" ", "@", "%", "#", "*", "+", "=", "-", ":", ".", " "]
+# 1-to-1 Character Mapping Table for Gray Levels:
+# px >= 240 -> ' ' (Blank background)
+# px < 35   -> '@' (Darkest hair / glasses frames / pupils)
+# px < 70   -> '%' (Beard / mustache / dark contours)
+# px < 105  -> '#' (Facial shadow contours / clothing)
+# px < 140  -> '*' (Mid shadows / jawline shading)
+# px < 175  -> '=' (Soft skin tone transitions)
+# px < 210  -> ':' (Light skin tone / forehead)
+# px < 240  -> '.' (Bright highlights / teeth / eye whites)
+
+
+def map_pixel_to_char(px: int) -> str:
+    if px >= 240:
+        return " "
+    elif px < 35:
+        return "@"
+    elif px < 70:
+        return "%"
+    elif px < 105:
+        return "#"
+    elif px < 140:
+        return "*"
+    elif px < 175:
+        return "="
+    elif px < 210:
+        return ":"
+    else:
+        return "."
 
 
 def get_char_color(char: str) -> str:
-    """Returns vibrant multi-tone colors matching character density."""
-    if char in ["@", "%", "#"]:
-        return "#79c0ff"  # Bright cyan highlight for dark features/hair/glasses
-    elif char in ["*", "+"]:
-        return "#58a6ff"  # Primary blue
-    elif char in ["=", "-"]:
-        return "#a5d6ff"  # Ice blue
-    elif char in [":", "."]:
-        return "#8b949e"  # Slate gray skin tone
-    return "#30363d"
+    """1-to-1 Color mapping for each unique character."""
+    mapping = {
+        "@": "#ffffff",  # Bright white for hair/glasses
+        "%": "#79c0ff",  # Bright cyan for beard/mustache
+        "#": "#58a6ff",  # Primary blue for shadows
+        "*": "#388bfd",  # Vibrant blue for mid shadows
+        "=": "#a5d6ff",  # Ice blue for soft skin
+        ":": "#8b949e",  # Slate gray for light skin
+        ".": "#484f58",  # Dim gray for highlights
+        " ": "#30363d",  # Blank space background
+    }
+    return mapping.get(char, "#30363d")
 
 
-def image_to_ascii(image_path: str, width: int = 85) -> list:
-    """Converts entire photo into a clean monospaced ASCII portrait."""
+def image_to_ascii(image_path: str, width: int = 90) -> list:
+    """Converts source-prepped.png into a 1-to-1 color-mapped ASCII portrait."""
     if not os.path.exists(image_path):
         print(f"Warning: Image '{image_path}' not found. Generating sample avatar pattern.")
         return generate_sample_ascii(width, int(width * 0.52))
 
-    # Read image in Grayscale
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    if img is None:
-        pil_img = Image.open(image_path).convert("L")
-        img = np.array(pil_img)
+    img = Image.open(image_path).convert("L")
 
-    # NO cropping - accommodate ENTIRE photo (head to shoulders)
-    filt = cv2.bilateralFilter(img, d=7, sigmaColor=50, sigmaSpace=50)
-
-    # Monospaced aspect ratio downsampling (~1 : 0.52)
-    pil_img = Image.fromarray(filt)
-    aspect_ratio = pil_img.height / pil_img.width
+    # Monospaced aspect ratio scaling (~1 : 0.52)
+    aspect_ratio = img.height / img.width
     height = int(width * aspect_ratio * 0.52)
 
-    img_resized = pil_img.resize((width, height), Image.Resampling.LANCZOS)
+    img_resized = img.resize((width, height), Image.Resampling.LANCZOS)
     np_img = np.array(img_resized)
 
     lines = []
-    num_ramp = len(ASCII_RAMP) - 1
-
     for y in range(height):
-        row = []
-        for x in range(width):
-            px = np_img[y, x]
-            idx = min(int((px / 255.0) * num_ramp), num_ramp)
-            char = ASCII_RAMP[idx]
-            row.append(char)
+        row = [map_pixel_to_char(np_img[y, x]) for x in range(width)]
         lines.append(row)
     return lines
 
 
-def generate_sample_ascii(width: int = 85, height: int = 44) -> list:
+def generate_sample_ascii(width: int = 90, height: int = 48) -> list:
     lines = []
     for y in range(height):
-        row = []
-        for x in range(width):
-            row.append(" ")
+        row = [" " for _ in range(width)]
         lines.append(row)
     return lines
 
 
-def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line_height: float = 7.0,
+def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.2, line_height: float = 6.6,
                      duration_per_line: float = 0.035):
-    """Renders ASCII lines into a multi-toned animated SMIL SVG file."""
+    """Renders ASCII lines into a 1-to-1 color-mapped animated SMIL SVG file."""
     num_rows = len(lines)
-    svg_width = 370  # Fixed width to fit top row layout
+    svg_width = 370  # Standard container width
     svg_height = max(500, int(num_rows * line_height) + 24)
     start_y = 18
 
@@ -144,14 +153,14 @@ def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(svg_lines))
 
-    print(f"Successfully generated clean full-photo ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
+    print(f"Successfully generated 1-to-1 color-mapped ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert prepped photo to clean animated ASCII SVG")
+    parser = argparse.ArgumentParser(description="Convert prepped photo to 1-to-1 color-mapped animated ASCII SVG")
     parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG")
-    parser.add_argument("--width", "-w", type=int, default=85, help="Character grid width (~85)")
+    parser.add_argument("--width", "-w", type=int, default=90, help="Character grid width (~90)")
 
     args = parser.parse_args()
 
