@@ -2,13 +2,13 @@
 """
 High-accuracy ASCII portrait generator.
 
-Instead of relying on textLength (which GitHub strips), we set the
-font-size so that the natural monospace character width * cols = card width.
+Strategy: Use a moderate font-size and add letter-spacing CSS so that
+(char_advance + letter_spacing) * cols = card_usable_width.
 
-Key: Monospace fonts render each glyph at exactly ch_advance = 0.6 * font_size.
-So: font_size = card_usable_width / (cols * 0.6)
+This works even if we don't know the exact font metrics, because
+letter-spacing adds uniform extra space per character.
 
-For line gaps: line-height = font_size (1.0em) — no extra spacing.
+Also: aspect ratio 0.55 for correct face proportions.
 """
 
 import os, sys, argparse, html
@@ -43,7 +43,8 @@ def load_and_resize(path, width):
         gray, fg = img, img < 240
 
     h0, w0 = gray.shape
-    height = int(width * (h0 / w0) * 0.45)
+    # 0.55 aspect correction: balances vertical stretch for monospace cells
+    height = int(width * (h0 / w0) * 0.55)
 
     gr = np.array(Image.fromarray(gray).resize((width, height), Image.Resampling.LANCZOS))
     mr = np.array(Image.fromarray((fg * 255).astype(np.uint8)).resize(
@@ -70,22 +71,25 @@ def to_ascii(gray, mask):
 def render_svg(chars, colors, out_path, cols):
     rows = len(chars)
     
-    # Card dimensions
     W = 370
     PAD = 4
-    TW = W - 2 * PAD  # 362px usable
+    TW = W - 2 * PAD  # 362px
 
-    # We need cols characters to fill TW pixels.
-    # Monospace advance width = 0.6 * font-size.
-    # So: cols * 0.6 * font_size = TW
-    # font_size = TW / (cols * 0.6)
-    font_size = TW / (cols * 0.6)
-    
-    # Line height = font_size for zero gaps
-    line_h = font_size * 1.0
-    
+    # Target: each character cell = TW / cols pixels wide
+    target_cell_w = TW / cols  # e.g. 362/80 = 4.525px per char
+
+    # We pick a font-size. The natural advance width of monospace is
+    # approximately 0.6 * font_size (varies by font).
+    # We then add letter-spacing to make up the difference.
+    font_size = 5.0  # readable but compact
+    natural_advance = font_size * 0.6  # ~3.0px
+    letter_spacing = target_cell_w - natural_advance  # extra space per char
+
+    # Line height: tight, no gaps. Use 1.0 * target_cell_w * 2 for proper aspect
+    line_h = font_size * 1.15  # slightly more than 1em to prevent clipping
+
     H = int(rows * line_h) + int(font_size) + 10
-    y0 = font_size + 2
+    y0 = font_size + 4
 
     L = []
     L.append(f'<svg xmlns="http://www.w3.org/2000/svg" '
@@ -93,8 +97,8 @@ def render_svg(chars, colors, out_path, cols):
     L.append('<style>')
     L.append(f'rect.bg{{fill:#0d1117;rx:6;stroke:#30363d;stroke-width:.5}}')
     L.append(f'text{{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;'
-             f'font-size:{font_size:.3f}px;white-space:pre;font-weight:600;'
-             f'line-height:{line_h:.3f}px}}')
+             f'font-size:{font_size:.2f}px;white-space:pre;font-weight:600;'
+             f'letter-spacing:{letter_spacing:.3f}px}}')
     L.append('</style>')
     L.append(f'<rect width="{W}" height="{H}" class="bg"/>')
 
@@ -102,9 +106,9 @@ def render_svg(chars, colors, out_path, cols):
     L.append('<defs>')
     for i in range(rows):
         cy = y0 + i * line_h - font_size - 1
-        d = round(i * 0.012, 3)
+        d = round(i * 0.015, 3)
         L.append(f'<clipPath id="r{i}"><rect x="0" y="{cy:.1f}" width="0" height="{line_h + 3:.1f}">'
-                 f'<animate attributeName="width" from="0" to="{W}" begin="{d}s" dur="0.025s" fill="freeze"/>'
+                 f'<animate attributeName="width" from="0" to="{W}" begin="{d}s" dur="0.03s" fill="freeze"/>'
                  f'</rect></clipPath>')
     L.append('</defs>')
 
@@ -113,7 +117,6 @@ def render_svg(chars, colors, out_path, cols):
         yp = y0 + i * line_h
         rc, rl = chars[i], colors[i]
         
-        # Group same-color spans
         spans = []
         cc, ct = None, ""
         for ch, col in zip(rc, rl):
@@ -132,7 +135,8 @@ def render_svg(chars, colors, out_path, cols):
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("\n".join(L))
-    print(f"OK: '{out_path}' ({W}x{H}px, {rows}x{cols}, font={font_size:.2f}px, charW={font_size*0.6:.2f}px)")
+    print(f"OK: '{out_path}' ({W}x{H}px, {rows}x{cols})")
+    print(f"   font={font_size}px, letter-spacing={letter_spacing:.3f}px, cell={target_cell_w:.2f}px")
 
 
 def main():
