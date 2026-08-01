@@ -153,8 +153,8 @@ def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line
         anim_dur = round(duration_per_line * 1.5, 3)
 
         svg_lines.append(f'    <clipPath id="{clip_id}">')
-        svg_lines.append(f'      <rect x="0" y="{row_y:.1f}" width="0" height="{row_h:.1f}">')
-        svg_lines.append(f'        <animate attributeName="width" from="0" to="{svg_width + 50}" begin="{delay}s" dur="{anim_dur}s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />')
+        svg_lines.append(f'      <rect x="8" y="{row_y:.1f}" width="0" height="{row_h:.1f}">')
+        svg_lines.append(f'        <animate attributeName="width" from="0" to="{svg_width - 16}" begin="{delay}s" dur="{anim_dur}s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />')
         svg_lines.append('      </rect>')
         svg_lines.append('    </clipPath>')
 
