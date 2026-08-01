@@ -1,51 +1,20 @@
 #!/usr/bin/env python3
 """
 prep_photo.py
-Preprocesses profile photo into a high-contrast Black & White prepped image:
-1. Removes background with rembg (or alpha fallback).
-2. Converts to high-contrast grayscale with CLAHE + Adaptive contrast enhancement.
-3. Composites subject onto a pure white (#ffffff) canvas.
-4. Saves to assets/source-prepped.png.
+Preprocesses input photo into a high-sharpness, edge-enhanced, perfectly centered prepped image:
+1. Isolates foreground subject & centers subject on a padded canvas.
+2. Applies high-contrast CLAHE adaptive histogram equalization.
+3. Applies Bilateral filtering + Laplacian edge amplification to define crisp facial edges.
+4. Applies Unsharp Masking & Sharpness boosting.
+5. Composites onto pure white background and saves to assets/source-prepped.png.
 """
 
 import os
 import sys
 import argparse
-import io
 import numpy as np
-from PIL import Image, ImageEnhance
 import cv2
-
-try:
-    from rembg import remove
-    REMBG_AVAILABLE = True
-except ImportError:
-    REMBG_AVAILABLE = False
-
-
-def remove_background(image_bytes: bytes) -> Image.Image:
-    """Removes image background using rembg if available."""
-    if REMBG_AVAILABLE:
-        try:
-            print("Removing background with rembg...")
-            out_bytes = remove(image_bytes)
-            return Image.open(io.BytesIO(out_bytes)).convert("RGBA")
-        except Exception as e:
-            print(f"Warning: rembg failed ({e}), falling back to standard image processing.")
-
-    img = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
-    return img
-
-
-def enhance_black_and_white(gray_np: np.ndarray, clip_limit: float = 3.5) -> np.ndarray:
-    """Applies CLAHE + high-contrast Black & White feature separation."""
-    # Adaptive histogram equalization
-    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=(8, 8))
-    equalized = clahe.apply(gray_np)
-
-    # Edge-preserving bilateral smoothing to keep glasses/eyes/mustache crisp
-    filtered = cv2.bilateralFilter(equalized, d=7, sigmaColor=50, sigmaSpace=50)
-    return filtered
+from PIL import Image, ImageFilter, ImageEnhance
 
 
 def process_image(input_path: str, output_path: str):
@@ -53,44 +22,80 @@ def process_image(input_path: str, output_path: str):
         print(f"Error: Input file '{input_path}' does not exist.")
         sys.exit(1)
 
-    print(f"Loading image from {input_path}...")
-    with open(input_path, "rb") as f:
-        img_bytes = f.read()
+    print(f"Loading image from '{input_path}'...")
+    img_bgr = cv2.imread(input_path, cv2.IMREAD_UNCHANGED)
+    if img_bgr is None:
+        pil_img = Image.open(input_path)
+        img_bgr = np.array(pil_img)
 
-    # Step 1: Remove background
-    rgba_img = remove_background(img_bytes)
+    # 1. Grayscale & Foreground Mask
+    if len(img_bgr.shape) == 3 and img_bgr.shape[2] == 4:
+        alpha = img_bgr[:, :, 3]
+        gray = cv2.cvtColor(img_bgr[:, :, :3], cv2.COLOR_BGR2GRAY)
+        fg_mask = alpha > 30
+    elif len(img_bgr.shape) == 3:
+        gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+        fg_mask = gray < 225
+    else:
+        gray = img_bgr.copy()
+        fg_mask = gray < 225
 
-    # Step 2: Separate RGB and Alpha mask
-    np_rgba = np.array(rgba_img)
-    rgb = np_rgba[:, :, :3]
-    alpha = np_rgba[:, :, 3]
+    # 2. Compute Subject Bounding Box for Centering
+    y_indices, x_indices = np.where(fg_mask)
+    if len(y_indices) > 0 and len(x_indices) > 0:
+        min_y, max_y = np.min(y_indices), np.max(y_indices)
+        min_x, max_x = np.min(x_indices), np.max(x_indices)
 
-    # Convert RGB to Grayscale
-    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+        cropped_gray = gray[min_y:max_y, min_x:max_x]
+        cropped_mask = fg_mask[min_y:max_y, min_x:max_x]
 
-    # Step 3: Apply B&W enhancement
-    bw_enhanced = enhance_black_and_white(gray)
+        # Create padded square canvas to center subject
+        h_crop, w_crop = cropped_gray.shape
+        max_dim = max(h_crop, w_crop)
 
-    # Boost contrast on PIL image
-    pil_bw = Image.fromarray(bw_enhanced)
-    pil_bw = ImageEnhance.Contrast(pil_bw).enhance(1.5)
-    pil_bw = ImageEnhance.Sharpness(pil_bw).enhance(1.6)
-    bw_enhanced = np.array(pil_bw)
+        centered_gray = np.ones((max_dim, max_dim), dtype=np.uint8) * 255
+        centered_mask = np.zeros((max_dim, max_dim), dtype=bool)
 
-    # Step 4: Composite subject onto pure white (#ffffff / 255) background using Alpha mask
-    output_np = np.ones_like(bw_enhanced) * 255
-    mask = alpha > 30
-    output_np[mask] = bw_enhanced[mask]
+        start_y = (max_dim - h_crop) // 2
+        start_x = (max_dim - w_crop) // 2
 
-    # Step 5: Save prepped photo
-    out_img = Image.fromarray(output_np)
+        centered_gray[start_y:start_y + h_crop, start_x:start_x + w_crop] = cropped_gray
+        centered_mask[start_y:start_y + h_crop, start_x:start_x + w_crop] = cropped_mask
+    else:
+        centered_gray = gray
+        centered_mask = fg_mask
+
+    # 3. High-Contrast CLAHE + Bilateral Filtering
+    print("Applying CLAHE contrast equalization & bilateral filtering...")
+    clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(8, 8))
+    equalized = clahe.apply(centered_gray)
+    bilateral = cv2.bilateralFilter(equalized, d=7, sigmaColor=50, sigmaSpace=50)
+
+    # 4. Laplacian Edge Amplification (Sharpen structural boundaries)
+    print("Amplifying structural edge contours (glasses, eyes, mustache, beard, chin, shirt)...")
+    laplacian = cv2.Laplacian(bilateral, cv2.CV_64F)
+    laplacian_abs = np.uint8(np.absolute(laplacian))
+    edge_enhanced = cv2.subtract(bilateral, np.uint8(laplacian_abs * 0.45))
+
+    # 5. Unsharp Masking & Sharpness Boosting
+    pil_img = Image.fromarray(edge_enhanced)
+    pil_unsharp = pil_img.filter(ImageFilter.UnsharpMask(radius=3, percent=250, threshold=1))
+    pil_sharp = ImageEnhance.Sharpness(pil_unsharp).enhance(2.0)
+    final_np = np.array(pil_sharp)
+
+    # Composite subject onto pure white background
+    composite = np.ones_like(final_np) * 255
+    composite[centered_mask] = final_np[centered_mask]
+
+    # Save to assets/source-prepped.png
+    out_img = Image.fromarray(composite)
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     out_img.save(output_path)
-    print(f"Successfully saved high-contrast prepped image to '{output_path}'.")
+    print(f"Successfully saved sharp, edge-enhanced prepped image to '{output_path}'.")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Preprocess photo into high-contrast B&W prepped image")
+    parser = argparse.ArgumentParser(description="Preprocess photo into high-sharpness edge-enhanced prepped image")
     parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to input photo")
     parser.add_argument("--output", "-o", default="assets/source-prepped.png", help="Path to output image")
 

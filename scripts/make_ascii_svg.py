@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
 """
 ===============================================================================
-  DIRECT & CENTERED HIGH-FIDELITY ASCII PORTRAIT GENERATOR (PRODUCTION ENGINE)
+  HIGH-FIDELITY EDGE-ENHANCED ASCII PORTRAIT GENERATOR (PRODUCTION ENGINE)
 ===============================================================================
 Description:
-    Converts an input photograph directly into a centered, photorealistic animated
-    ASCII SVG vector card for GitHub profile READMEs.
+    Transforms prepped photos (assets/source-prepped.png) into photorealistic
+    animated ASCII SVG vector cards for GitHub profile READMEs.
 
 Key Features:
-    1. Direct Input Processing (directly from input photo)
-    2. Automatic Foreground Subject Detection & Perfect Horizontal/Vertical Centering
-    3. CLAHE Local Contrast Equalization + Bilateral Edge Preservation + Unsharp Masking
-    4. 70-Level High-Density Character Ramp Mapping
-    5. Multi-Tone GitHub Dark Theme Palette
-    6. Monospaced SMIL Left-to-Right Animated SVG Vector Card
+    1. Ingests Edge-Enhanced Prepped Photo
+    2. 70-Level High-Density Character Ramp Mapping
+    3. Multi-Tone GitHub Dark Theme Color Palette
+    4. Monospaced SMIL Left-to-Right Animated SVG Vector Card
 
 Usage:
-    python scripts/make_ascii_svg.py --input assets/input_photo.png --output avi-ascii.svg --width 130
+    python scripts/make_ascii_svg.py --input assets/source-prepped.png --output avi-ascii.svg --width 130
 ===============================================================================
 """
 
@@ -26,7 +24,7 @@ import argparse
 import html
 import cv2
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image
 
 # High-density 70-level character ramp from dark/dense to light/sparse
 DENSITY_RAMP = list(
@@ -37,11 +35,8 @@ DENSITY_RAMP = list(
 NUM_DENSITY_LEVELS = len(DENSITY_RAMP) - 1
 
 
-def load_and_center_subject(image_path: str, bg_thresh: int = 225) -> tuple:
-    """
-    Loads input photo directly, isolates the subject, crops tight to the subject bounding box,
-    and centers the subject on a padded canvas for PERFECT horizontal & vertical alignment.
-    """
+def load_prepped_image(image_path: str, bg_thresh: int = 242) -> tuple:
+    """Loads prepped image and extracts foreground subject mask."""
     if not os.path.exists(image_path):
         raise FileNotFoundError(f"Input file '{image_path}' not found.")
 
@@ -61,47 +56,11 @@ def load_and_center_subject(image_path: str, bg_thresh: int = 225) -> tuple:
         gray = img_bgr.copy()
         fg_mask = gray < bg_thresh
 
-    # Find subject bounding box
-    y_indices, x_indices = np.where(fg_mask)
-    if len(y_indices) == 0 or len(x_indices) == 0:
-        return gray, fg_mask
-
-    min_y, max_y = np.min(y_indices), np.max(y_indices)
-    min_x, max_x = np.min(x_indices), np.max(x_indices)
-
-    cropped_gray = gray[min_y:max_y, min_x:max_x]
-    cropped_mask = fg_mask[min_y:max_y, min_x:max_x]
-
-    # Create padded square canvas to center subject perfectly
-    h_crop, w_crop = cropped_gray.shape
-    max_dim = max(h_crop, w_crop)
-
-    centered_gray = np.ones((max_dim, max_dim), dtype=np.uint8) * 255
-    centered_mask = np.zeros((max_dim, max_dim), dtype=bool)
-
-    start_y = (max_dim - h_crop) // 2
-    start_x = (max_dim - w_crop) // 2
-
-    centered_gray[start_y:start_y + h_crop, start_x:start_x + w_crop] = cropped_gray
-    centered_mask[start_y:start_y + h_crop, start_x:start_x + w_crop] = cropped_mask
-
-    return centered_gray, centered_mask
+    return gray, fg_mask
 
 
-def apply_enhancement_pipeline(gray: np.ndarray) -> np.ndarray:
-    """Applies CLAHE adaptive contrast, Bilateral filtering, and Unsharp Masking."""
-    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
-    equalized = clahe.apply(gray)
-
-    bilateral = cv2.bilateralFilter(equalized, d=7, sigmaColor=50, sigmaSpace=50)
-
-    pil_img = Image.fromarray(bilateral)
-    pil_unsharp = pil_img.filter(ImageFilter.UnsharpMask(radius=2, percent=200, threshold=2))
-    return np.array(pil_unsharp)
-
-
-def resize_centered_subject(img: np.ndarray, mask: np.ndarray, width: int = 130) -> tuple:
-    """Resizes centered subject using Lanczos interpolation with aspect ratio adjustment (~1 : 0.52)."""
+def resize_subject(img: np.ndarray, mask: np.ndarray, width: int = 130) -> tuple:
+    """Resizes image using Lanczos interpolation with monospaced aspect ratio adjustment (~1 : 0.52)."""
     h_orig, w_orig = img.shape[:2]
     aspect_ratio = h_orig / float(w_orig)
     height = int(width * aspect_ratio * 0.52)
@@ -131,21 +90,14 @@ def get_github_dark_color(px: float) -> str:
 
 
 def render_ascii_portrait(image_path: str, output_path: str, width: int = 130):
-    """Generates centered ASCII portrait directly from input photo."""
-    print(f"[1/4] Loading '{image_path}' and isolating/centering subject...")
-    centered_gray, centered_mask = load_and_center_subject(image_path)
+    """Generates ASCII portrait from edge-enhanced prepped photo."""
+    print(f"[1/3] Loading prepped photo from '{image_path}'...")
+    gray, fg_mask = load_prepped_image(image_path)
 
-    print("[2/4] Applying CLAHE adaptive contrast, Bilateral filtering & Unsharp masking...")
-    enhanced_gray = apply_enhancement_pipeline(centered_gray)
+    print(f"[2/3] Resizing to {width} columns via Lanczos interpolation...")
+    img_resized, mask_resized, grid_w, grid_h = resize_subject(gray, fg_mask, width=width)
 
-    # Composite subject onto white canvas
-    composite = np.ones_like(enhanced_gray) * 255
-    composite[centered_mask] = enhanced_gray[centered_mask]
-
-    print(f"[3/4] Resizing centered subject to {width} columns...")
-    img_resized, mask_resized, grid_w, grid_h = resize_centered_subject(composite, centered_mask, width=width)
-
-    print("[4/4] Mapping pixels to 70-level high-density ASCII ramp...")
+    print("[3/3] Mapping pixels to 70-level high-density ASCII ramp...")
     ascii_grid = []
     color_grid = []
 
@@ -236,12 +188,12 @@ def generate_animated_svg(ascii_grid: list, color_grid: list, output_path: str,
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(svg_lines))
 
-    print(f"Successfully generated Centered Direct ASCII SVG: '{output_path}' ({svg_width}x{svg_height}px)")
+    print(f"Successfully generated High-Fidelity ASCII SVG: '{output_path}' ({svg_width}x{svg_height}px)")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Direct & Centered ASCII Portrait Generator")
-    parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to direct input photo")
+    parser = argparse.ArgumentParser(description="High-Fidelity ASCII Portrait Generator")
+    parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG card")
     parser.add_argument("--width", "-w", type=int, default=130, help="Character grid width (default: 130)")
 
