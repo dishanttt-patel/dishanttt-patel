@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """
 High-accuracy ASCII portrait generator.
-Uses textLength with spacingAndGlyphs to fill the card width perfectly.
+
+Instead of relying on textLength (which GitHub strips), we set the
+font-size so that the natural monospace character width * cols = card width.
+
+Key: Monospace fonts render each glyph at exactly ch_advance = 0.6 * font_size.
+So: font_size = card_usable_width / (cols * 0.6)
+
+For line gaps: line-height = font_size (1.0em) — no extra spacing.
 """
 
 import os, sys, argparse, html
@@ -62,34 +69,41 @@ def to_ascii(gray, mask):
 
 def render_svg(chars, colors, out_path, cols):
     rows = len(chars)
+    
+    # Card dimensions
     W = 370
-    PAD = 8
-    TW = W - 2 * PAD  # text area width = 354px
+    PAD = 4
+    TW = W - 2 * PAD  # 362px usable
 
-    # Font size: we want each character to be TW/cols wide
-    # With spacingAndGlyphs, the browser stretches glyphs to fit textLength
-    char_w = TW / cols
-    font_size = char_w / 0.6  # monospace char is ~0.6em wide
-    line_h = font_size * 1.0  # tight — no gaps between rows
-
-    H = int(rows * line_h) + 20
-    y0 = font_size + 6
+    # We need cols characters to fill TW pixels.
+    # Monospace advance width = 0.6 * font-size.
+    # So: cols * 0.6 * font_size = TW
+    # font_size = TW / (cols * 0.6)
+    font_size = TW / (cols * 0.6)
+    
+    # Line height = font_size for zero gaps
+    line_h = font_size * 1.0
+    
+    H = int(rows * line_h) + int(font_size) + 10
+    y0 = font_size + 2
 
     L = []
-    L.append(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">')
+    L.append(f'<svg xmlns="http://www.w3.org/2000/svg" '
+             f'viewBox="0 0 {W} {H}" width="{W}" height="{H}">')
     L.append('<style>')
-    L.append('.bg{fill:#0d1117;rx:6;stroke:#30363d;stroke-width:.5}')
+    L.append(f'rect.bg{{fill:#0d1117;rx:6;stroke:#30363d;stroke-width:.5}}')
     L.append(f'text{{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;'
-             f'font-size:{font_size:.2f}px;white-space:pre;font-weight:700}}')
+             f'font-size:{font_size:.3f}px;white-space:pre;font-weight:600;'
+             f'line-height:{line_h:.3f}px}}')
     L.append('</style>')
     L.append(f'<rect width="{W}" height="{H}" class="bg"/>')
 
-    # Animation clip paths
+    # Animation
     L.append('<defs>')
     for i in range(rows):
-        cy = y0 + i * line_h - font_size
+        cy = y0 + i * line_h - font_size - 1
         d = round(i * 0.012, 3)
-        L.append(f'<clipPath id="r{i}"><rect x="0" y="{cy:.1f}" width="0" height="{line_h + 2:.1f}">'
+        L.append(f'<clipPath id="r{i}"><rect x="0" y="{cy:.1f}" width="0" height="{line_h + 3:.1f}">'
                  f'<animate attributeName="width" from="0" to="{W}" begin="{d}s" dur="0.025s" fill="freeze"/>'
                  f'</rect></clipPath>')
     L.append('</defs>')
@@ -98,6 +112,8 @@ def render_svg(chars, colors, out_path, cols):
     for i in range(rows):
         yp = y0 + i * line_h
         rc, rl = chars[i], colors[i]
+        
+        # Group same-color spans
         spans = []
         cc, ct = None, ""
         for ch, col in zip(rc, rl):
@@ -108,8 +124,7 @@ def render_svg(chars, colors, out_path, cols):
                 cc, ct = col, e
         if ct: spans.append(f'<tspan fill="{cc}">{ct}</tspan>')
 
-        L.append(f'<text x="{PAD}" y="{yp:.1f}" textLength="{TW}" '
-                 f'lengthAdjust="spacingAndGlyphs" clip-path="url(#r{i})">'
+        L.append(f'<text x="{PAD}" y="{yp:.1f}" clip-path="url(#r{i})">'
                  f'{"".join(spans)}</text>')
     L.append('</g>')
     L.append('</svg>')
@@ -117,23 +132,20 @@ def render_svg(chars, colors, out_path, cols):
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("\n".join(L))
-    print(f"Generated: '{out_path}' ({W}x{H}px, {rows}x{cols}, font={font_size:.1f}px)")
+    print(f"OK: '{out_path}' ({W}x{H}px, {rows}x{cols}, font={font_size:.2f}px, charW={font_size*0.6:.2f}px)")
 
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("-i", "--input", default="assets/source-prepped.png")
     p.add_argument("-o", "--output", default="avi-ascii.svg")
-    p.add_argument("-w", "--width", type=int, default=100)
+    p.add_argument("-w", "--width", type=int, default=80)
     a = p.parse_args()
     if not os.path.exists(a.input):
         print(f"Error: '{a.input}' not found."); sys.exit(1)
 
-    print(f"[1/3] Loading, resizing to {a.width} cols...")
     g, m, gw, gh = load_and_resize(a.input, a.width)
-    print(f"[2/3] Mapping {gw}x{gh} -> {NUM_LEVELS+1}-level ramp...")
     ch, co = to_ascii(g, m)
-    print("[3/3] Rendering SVG...")
     render_svg(ch, co, a.output, gw)
 
 if __name__ == "__main__":
