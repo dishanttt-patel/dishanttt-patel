@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 """
 ===============================================================================
-                     HIGH-DEFINITIONAL ASCII ART & SVG GENERATOR
+               ACCURATE BILATERAL ASCII PORTRAIT & SVG GENERATOR
 ===============================================================================
 Description:
-    Converts a preprocessed profile photo into a high-fidelity monospaced ASCII
-    portrait with SMIL row-by-row reveal animations and multi-tone terminal styling.
-
-Features:
-    1. 120-Column Ultra-HD Grid Resolution.
-    2. Adaptive Aspect Ratio Correction (~1:0.52 monospaced character ratio).
-    3. Multi-tone Terminal Styling (White, Cyan, Blue, Slate, Dim Gray).
-    4. SMIL Animated SVG Output & Optional Plain Text (.txt) Output.
+    Converts a profile photo into an accurate monospaced ASCII portrait SVG.
+    Uses OpenCV Bilateral Edge-Preserving Filtering to smooth skin noise while
+    keeping glasses frames, eyes, pupils, mustache, and facial contours 100% sharp.
 
 Usage:
-    python make_ascii_art_standalone.py --input assets/source-prepped.png --output avi-ascii.svg --width 120
+    python make_ascii_art_standalone.py --input assets/input_photo.png --output avi-ascii.svg --txt avi-ascii.txt --width 110
 ===============================================================================
 """
 
@@ -22,102 +17,75 @@ import os
 import sys
 import argparse
 import html
+import cv2
 import numpy as np
-from PIL import Image, ImageEnhance, ImageOps
+from PIL import Image
 
-# High-precision 17-level character density ramp matching dark-to-light features
+# 17-level density ramp for smooth feature rendering
 ASCII_RAMP = ["@", "#", "8", "$", "%", "&", "W", "M", "0", "Q", "P", "+", "=", ":", "-", ".", "."]
 
 
 def get_char_color(char: str) -> str:
-    """
-    Returns multi-tone terminal color hexadecimal strings based on character density.
-    
-    Colors:
-        - White (#ffffff): Glasses frames, dark hair, eyes, facial outlines
-        - Bright Cyan (#79c0ff): Secondary hair highlights & primary features
-        - Blue (#58a6ff): Mid-tone facial shading
-        - Slate Gray (#8b949e): Soft skin tone transitions
-        - Dim Gray (#484f58): Background dot-matrix grid
-    """
+    """Returns multi-tone colors for SVG rendering."""
     if char in ["@", "#", "8"]:
-        return "#ffffff"
+        return "#ffffff"  # Bright white for glasses, hair, eyes
     elif char in ["$", "%", "&", "W"]:
-        return "#79c0ff"
+        return "#79c0ff"  # Bright cyan
     elif char in ["M", "0", "Q", "P"]:
-        return "#58a6ff"
+        return "#58a6ff"  # Primary blue
     elif char in ["+", "=", ":"]:
-        return "#8b949e"
+        return "#8b949e"  # Slate gray skin tone
     elif char in ["-", "."]:
-        return "#484f58"
+        return "#484f58"  # Dim gray background dot
     return "#30363d"
 
 
-def image_to_ascii_grid(image_path: str, width: int = 120) -> list:
-    """
-    Loads, crops, contrast-boosts, and downsamples an image into a 2D grid of ASCII characters.
-
-    Args:
-        image_path (str): Path to input image file (e.g. assets/source-prepped.png)
-        width (int): Grid column count (default: 120 for Ultra-HD detail)
-
-    Returns:
-        list of list of str: 2D array of character rows
-    """
+def image_to_ascii_grid(image_path: str, width: int = 110) -> list:
+    """Converts image to clean 2D ASCII grid preserving sharp facial features."""
     if not os.path.exists(image_path):
         raise FileNotFoundError(f"Input image file '{image_path}' not found.")
 
-    # Load image as Grayscale (8-bit pixels, 0..255)
-    img = Image.open(image_path).convert("L")
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        pil_img = Image.open(image_path).convert("L")
+        img = np.array(pil_img)
 
-    # 1. Crop upper 72% (head & shoulders) for maximum facial feature resolution
-    w_orig, h_orig = img.size
-    crop_img = img.crop((0, 0, w_orig, int(h_orig * 0.72)))
+    # Crop upper 72% for head & shoulders focus
+    h_orig, w_orig = img.shape
+    crop = img[0:int(h_orig * 0.72), 0:w_orig]
 
-    # 2. Histogram Equalization & Sharpness Contrast Enhancement
-    equalized = ImageOps.equalize(crop_img)
-    enhanced = ImageEnhance.Contrast(equalized).enhance(1.4)
-    enhanced = ImageEnhance.Sharpness(enhanced).enhance(1.6)
+    # Bilateral filter to smooth skin noise while preserving sharp glasses/eyes/mustache edges
+    filtered = cv2.bilateralFilter(crop, d=9, sigmaColor=75, sigmaSpace=75)
 
-    # 3. Monospaced Aspect Ratio Scaling (Standard font height-to-width ratio is ~1 : 0.52)
-    aspect_ratio = enhanced.height / enhanced.width
+    pil_img = Image.fromarray(filtered)
+    aspect_ratio = pil_img.height / pil_img.width
     height = int(width * aspect_ratio * 0.52)
 
-    # Downsample using high-quality Lanczos resampling
-    img_resized = enhanced.resize((width, height), Image.Resampling.LANCZOS)
+    img_resized = pil_img.resize((width, height), Image.Resampling.LANCZOS)
     np_img = np.array(img_resized)
 
-    # 4. Map Grayscale Luminance (0..255) to Character Density Ramp
     num_ramp = len(ASCII_RAMP) - 1
-    ascii_grid = []
+    grid = []
 
     for y in range(height):
         row = []
         for x in range(width):
-            pixel_val = np_img[y, x]
-            idx = min(int((pixel_val / 255.0) * num_ramp), num_ramp)
+            px = np_img[y, x]
+            idx = min(int((px / 255.0) * num_ramp), num_ramp)
             char = ASCII_RAMP[idx]
             row.append(char)
-        ascii_grid.append(row)
+        grid.append(row)
 
-    return ascii_grid
+    return grid
 
 
-def render_animated_svg(ascii_grid: list, output_path: str, font_size: float = 4.2, line_height: float = 5.6):
-    """
-    Renders 2D ASCII character grid into an animated SMIL vector SVG card.
-
-    Args:
-        ascii_grid (list): 2D array of ASCII characters
-        output_path (str): File path for generated SVG
-        font_size (float): Character font size in pixels (default: 4.2px)
-        line_height (float): Line height spacing in pixels (default: 5.6px)
-    """
+def render_animated_svg(ascii_grid: list, output_path: str, font_size: float = 4.6, line_height: float = 6.0):
+    """Renders 2D ASCII character grid into an animated SMIL vector SVG card."""
     num_rows = len(ascii_grid)
-    svg_width = 370  # Standard container width matching GitHub README layout
+    svg_width = 370
     svg_height = max(500, int(num_rows * line_height) + 24)
     start_y = 18
-    duration_per_line = 0.03  # Wipe animation duration per row (seconds)
+    duration_per_line = 0.03
 
     svg_lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {svg_width} {svg_height}" width="{svg_width}" height="{svg_height}">',
@@ -129,7 +97,6 @@ def render_animated_svg(ascii_grid: list, output_path: str, font_size: float = 4
         '  <defs>'
     ]
 
-    # SMIL row-by-row horizontal wipe clip paths
     for i in range(num_rows):
         clip_id = f"clip-row-{i}"
         row_y = start_y + (i * line_height) - font_size
@@ -146,7 +113,6 @@ def render_animated_svg(ascii_grid: list, output_path: str, font_size: float = 4
     svg_lines.append('  </defs>')
     svg_lines.append('  <g class="ascii-text">')
 
-    # Group adjacent identical colors into optimized <tspan> elements
     for i, row_chars in enumerate(ascii_grid):
         clip_id = f"clip-row-{i}"
         y_pos = start_y + (i * line_height)
@@ -191,21 +157,17 @@ def save_plain_text(ascii_grid: list, txt_path: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="High-Quality Monospaced ASCII Portrait & SVG Generator")
-    parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
+    parser = argparse.ArgumentParser(description="Accurate Monospaced ASCII Portrait & SVG Generator")
+    parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to input photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG file")
     parser.add_argument("--txt", "-t", default=None, help="Optional path to save plain text ASCII (.txt)")
-    parser.add_argument("--width", "-w", type=int, default=120, help="Grid width columns (default: 120)")
+    parser.add_argument("--width", "-w", type=int, default=110, help="Grid width columns (default: 110)")
 
     args = parser.parse_args()
 
-    # Generate 2D ASCII Grid
     ascii_grid = image_to_ascii_grid(args.input, width=args.width)
-
-    # Render Animated SVG
     render_animated_svg(ascii_grid, args.output)
 
-    # Save Plain Text if requested
     if args.txt:
         save_plain_text(ascii_grid, args.txt)
 
