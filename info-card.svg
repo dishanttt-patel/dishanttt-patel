@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 450" width="490" height="450">
+  <style>
+    .card-bg { fill: #0d1117; rx: 8px; stroke: #30363d; stroke-width: 1px; }
+    .title-bar { fill: #161b22; rx: 8px 8px 0 0; }
+    .dot-red { fill: #ff5f56; }
+    .dot-yellow { fill: #ffbd2e; }
+    .dot-green { fill: #27c93f; }
+    .term-title { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; fill: #8b949e; font-weight: 600; }
+    .text-base { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; }
+    .user-header { fill: #58a6ff; font-weight: 700; font-size: 14px; }
+    .separator { stroke: #30363d; stroke-width: 1px; stroke-dasharray: 4; }
+    .key { fill: #79c0ff; font-weight: 600; }
+    .val { fill: #c9d1d9; }
+
+    .animate-row {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: fadeInRow 0.4s ease-out forwards;
+    }
+    @keyframes fadeInRow {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+  </style>
+  <rect width="490" height="450" class="card-bg" />
+  <rect width="490" height="32" class="title-bar" />
+  <!-- Window Control Dots -->
+  <circle cx="16" cy="16" r="5.5" class="dot-red" />
+  <circle cx="32" cy="16" r="5.5" class="dot-yellow" />
+  <circle cx="48" cy="16" r="5.5" class="dot-green" />
+  <text x="245.0" y="20" text-anchor="middle" class="term-title">dishanttt-patel@github: ~ (neofetch)</text>
+  <g transform="translate(20, 45)">
+    <g class="animate-row" style="animation-delay: 0.10s;">
+      <text x="0" y="20" class="text-base user-header">dishanttt-patel<tspan fill="#8b949e">@</tspan>github-profile</text>
+      <line x1="0" y1="28" x2="450" y2="28" class="separator" />
+    </g>
+    <g class="animate-row" style="animation-delay: 0.18s;">
+      <text x="0" y="52" class="text-base">
+        <tspan fill="#79c0ff" font-weight="700">OS:</tspan>
+        <tspan x="110" class="val">macOS Sonoma / Arch Linux x86_64</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.26s;">
+      <text x="0" y="90" class="text-base">
+        <tspan fill="#79c0ff" font-weight="700">Host:</tspan>
+        <tspan x="110" class="val">GitHub Profile Terminal v2.4</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.34s;">
+      <text x="0" y="128" class="text-base">
+        <tspan fill="#a5d6ff" font-weight="700">Role:</tspan>
+        <tspan x="110" class="val">Software Engineer &amp; AI Builder</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.42s;">
+      <text x="0" y="166" class="text-base">
+        <tspan fill="#7ee787" font-weight="700">Now:</tspan>
+        <tspan x="110" class="val">Developing AI tools &amp; web apps</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.50s;">
+      <text x="0" y="204" class="text-base">
+        <tspan fill="#d2a8ff" font-weight="700">Prev:</tspan>
+        <tspan x="110" class="val">Full Stack Developer</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.58s;">
+      <text x="0" y="242" class="text-base">
+        <tspan fill="#ffa657" font-weight="700">Stack:</tspan>
+        <tspan x="110" class="val">Python, TypeScript, React, Node.js, PyTorch</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.66s;">
+      <text x="0" y="280" class="text-base">
+        <tspan fill="#ff7b72" font-weight="700">Highlights:</tspan>
+        <tspan x="120" class="val">Open Source, System Architecture, Web Dev</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.74s;">
+      <text x="0" y="318" class="text-base">
+        <tspan fill="#a5d6ff" font-weight="700">Uptime:</tspan>
+        <tspan x="110" class="val">24/7 Automation via GitHub Actions</tspan>
+      </text>
+    </g>
+    <g class="animate-row" style="animation-delay: 0.84s;">
+      <g transform="translate(0, 368)">
+        <rect x="0" y="0" width="18" height="14" rx="3" fill="#484f58" />
+        <rect x="22" y="0" width="18" height="14" rx="3" fill="#ff7b72" />
+        <rect x="44" y="0" width="18" height="14" rx="3" fill="#7ee787" />
+        <rect x="66" y="0" width="18" height="14" rx="3" fill="#ffa657" />
+        <rect x="88" y="0" width="18" height="14" rx="3" fill="#79c0ff" />
+        <rect x="110" y="0" width="18" height="14" rx="3" fill="#d2a8ff" />
+        <rect x="132" y="0" width="18" height="14" rx="3" fill="#a5d6ff" />
+        <rect x="154" y="0" width="18" height="14" rx="3" fill="#f0f6fc" />
+      </g>
+    </g>
+  </g>
+</svg>
