@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
 tune_ascii.py
-Generates 4 distinct state-of-the-art ASCII portrait techniques from source-prepped.png:
-1. Atkinson Dithering (avi-ascii-atkinson.svg) - Classic Mac OS stippled dithering
-2. Directional Sobel Contour Mapping (avi-ascii-sobel.svg) - Structural stroke-mapped ASCII art
-3. Floyd-Steinberg Dithering (avi-ascii-floyd.svg) - Smooth error diffusion dithering
-4. Sharp Outlines (avi-ascii-sharp.svg) - High-contrast edge outlines
+Generates 3 distinct state-of-the-art ASCII portrait techniques from source-prepped.png:
+1. High-Definition 130-col Grid (avi-ascii-hd.svg) - Maximum spatial facial detail & accuracy
+2. Atkinson Dithering (avi-ascii-atkinson.svg) - Classic Mac OS stippled dithering
+3. Directional Sobel Contour Mapping (avi-ascii-sobel.svg) - Structural stroke-mapped ASCII art
 """
 
 import os
@@ -15,22 +14,22 @@ import cv2
 import numpy as np
 from PIL import Image
 
-def render_svg(lines: list, output_path: str, font_size: float = 5.0, line_height: float = 6.4):
+def render_svg(lines: list, output_path: str, font_size: float = 4.2, line_height: float = 5.4):
     num_rows = len(lines)
     svg_width = 370
     svg_height = max(500, int(num_rows * line_height) + 24)
     start_y = 18
 
     def get_color(char):
-        if char in ["@", "#", "B", "%", "8", "|", "/", "\\", "-"]:
-            return "#ffffff"  # Bright white for structural features & outlines
-        elif char in ["$", "&", "*", "+"]:
-            return "#79c0ff"  # Bright cyan
-        elif char in ["=", "i", "!"]:
-            return "#58a6ff"  # Primary blue
-        elif char in [":", "."]:
-            return "#8b949e"  # Slate gray
-        return "#30363d"
+        if char in ["@", "#", "$", "%"]:
+            return "#ffffff"  # Bright white for glasses frames, pupils, dark hair, shirt
+        elif char in ["8", "&", "W", "M", "0"]:
+            return "#79c0ff"  # Bright cyan for mustache, beard, facial contours
+        elif char in ["Q", "P", "o", "a"]:
+            return "#58a6ff"  # Primary blue for mid-tone skin shading
+        elif char in ["+", "=", ":", "-", ".", "'"]:
+            return "#8b949e"  # Slate gray for skin highlights
+        return "#30363d"     # Background space
 
     svg_lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {svg_width} {svg_height}" width="{svg_width}" height="{svg_height}">',
@@ -46,8 +45,8 @@ def render_svg(lines: list, output_path: str, font_size: float = 5.0, line_heigh
         clip_id = f"clip-row-{i}"
         row_y = start_y + (i * line_height) - font_size
         row_h = line_height + 2
-        delay = round(i * 0.035, 3)
-        anim_dur = round(0.035 * 1.5, 3)
+        delay = round(i * 0.025, 3)
+        anim_dur = round(0.025 * 1.5, 3)
 
         svg_lines.append(f'    <clipPath id="{clip_id}">')
         svg_lines.append(f'      <rect x="8" y="{row_y:.1f}" width="0" height="{row_h:.1f}">')
@@ -88,8 +87,41 @@ def render_svg(lines: list, output_path: str, font_size: float = 5.0, line_heigh
     print(f"Generated technique: '{output_path}'")
 
 
+def make_hd_variant(img_path: str, output_path: str):
+    """Technique 1: Upgraded 130-Column Ultra-HD Variant"""
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        pil_img = Image.open(img_path).convert("L")
+        img = np.array(pil_img)
+
+    filt = cv2.bilateralFilter(img, d=7, sigmaColor=50, sigmaSpace=50)
+    clahe = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(8, 8))
+    enhanced = clahe.apply(filt)
+
+    w = 130
+    pil_img = Image.fromarray(enhanced)
+    h = int(w * (pil_img.height / pil_img.width) * 0.52)
+    resized = pil_img.resize((w, h), Image.Resampling.LANCZOS)
+    arr = np.array(resized)
+
+    ramp = ['@', '#', '$', '%', '8', '&', 'W', 'M', '0', 'Q', 'P', 'o', 'a', '+', '=', ':', '-', '.', '\'', ' ']
+    num_ramp = len(ramp) - 1
+
+    lines = []
+    for row in arr:
+        r = []
+        for px in row:
+            if px >= 242:
+                r.append(" ")
+            else:
+                idx = min(int((px / 241.0) * num_ramp), num_ramp)
+                r.append(ramp[idx])
+        lines.append(r)
+    render_svg(lines, output_path, font_size=4.2, line_height=5.4)
+
+
 def make_atkinson_variant(img_path: str, output_path: str):
-    """Technique 1: Atkinson Dithering (Classic Mac OS Stippling)"""
+    """Technique 2: Atkinson Dithering (Classic Mac OS Stippling)"""
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     w = 90
     h = int(w * (img.shape[0] / img.shape[1]) * 0.52)
@@ -122,7 +154,7 @@ def make_atkinson_variant(img_path: str, output_path: str):
 
 
 def make_sobel_variant(img_path: str, output_path: str):
-    """Technique 2: Directional Sobel Contour Mapping"""
+    """Technique 3: Directional Sobel Contour Mapping"""
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     w = 90
     h = int(w * (img.shape[0] / img.shape[1]) * 0.52)
@@ -170,11 +202,12 @@ def main():
         print(f"Error: {img_path} not found.")
         sys.exit(1)
 
+    make_hd_variant(img_path, "avi-ascii-hd.svg")
     make_atkinson_variant(img_path, "avi-ascii-atkinson.svg")
     make_sobel_variant(img_path, "avi-ascii-sobel.svg")
 
-    # Set main default avi-ascii.svg to Atkinson Dithering technique
-    make_atkinson_variant(img_path, "avi-ascii.svg")
+    # Set default profile avi-ascii.svg to the Upgraded HD variant
+    make_hd_variant(img_path, "avi-ascii.svg")
 
 
 if __name__ == "__main__":
