@@ -1,178 +1,123 @@
 #!/usr/bin/env python3
 """
-===============================================================================
-  HIGH-ACCURACY ASCII PORTRAIT GENERATOR
-===============================================================================
-
-Uses SVG textLength attribute to guarantee each row of characters fills
-the exact card width. No guessing at character widths.
-
-Usage:
-  python scripts/make_ascii_svg.py
-===============================================================================
+High-accuracy ASCII portrait generator.
+Uses textLength with spacingAndGlyphs to fill the card width perfectly.
 """
 
-import os
-import sys
-import argparse
-import html
+import os, sys, argparse, html
 import cv2
 import numpy as np
 from PIL import Image
 
-
-# 10-level ramp with visually distinct characters
 RAMP = "@%#WMohd=:. "
-NUM_LEVELS = len(RAMP) - 1  # 11
+NUM_LEVELS = len(RAMP) - 1
 
 
-def pixel_to_color(px: float) -> str:
-    """5-tier GitHub dark theme palette."""
-    if px < 50:
-        return "#e6edf3"
-    elif px < 100:
-        return "#79c0ff"
-    elif px < 150:
-        return "#58a6ff"
-    elif px < 200:
-        return "#8b949e"
+def pixel_to_color(px):
+    if px < 50:   return "#e6edf3"
+    if px < 100:  return "#79c0ff"
+    if px < 150:  return "#58a6ff"
+    if px < 200:  return "#8b949e"
     return "#484f58"
 
 
-def load_and_resize(image_path: str, width: int) -> tuple:
-    """Load image, extract foreground, resize."""
-    img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+def load_and_resize(path, width):
+    img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     if img is None:
-        img = np.array(Image.open(image_path))
+        img = np.array(Image.open(path))
 
     if len(img.shape) == 3 and img.shape[2] == 4:
         gray = cv2.cvtColor(img[:, :, :3], cv2.COLOR_BGR2GRAY)
-        fg_mask = img[:, :, 3] > 20
+        fg = img[:, :, 3] > 20
     elif len(img.shape) == 3:
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        fg_mask = gray < 240
+        fg = gray < 240
     else:
-        gray = img
-        fg_mask = gray < 240
+        gray, fg = img, img < 240
 
-    h_orig, w_orig = gray.shape
-    # Character cells in monospace are ~2x taller than wide.
-    # Scale height accordingly.
-    height = int(width * (h_orig / w_orig) * 0.45)
+    h0, w0 = gray.shape
+    height = int(width * (h0 / w0) * 0.45)
 
-    resized = np.array(
-        Image.fromarray(gray).resize((width, height), Image.Resampling.LANCZOS)
-    )
-    mask_r = np.array(
-        Image.fromarray((fg_mask * 255).astype(np.uint8)).resize(
-            (width, height), Image.Resampling.NEAREST
-        )
-    ) > 128
-
-    return resized, mask_r, width, height
+    gr = np.array(Image.fromarray(gray).resize((width, height), Image.Resampling.LANCZOS))
+    mr = np.array(Image.fromarray((fg * 255).astype(np.uint8)).resize(
+        (width, height), Image.Resampling.NEAREST)) > 128
+    return gr, mr, width, height
 
 
-def image_to_ascii(gray: np.ndarray, mask: np.ndarray) -> tuple:
-    """Map pixels to characters and colors."""
+def to_ascii(gray, mask):
     h, w = gray.shape
     chars, colors = [], []
-
     for y in range(h):
         cr, clr = [], []
         for x in range(w):
             if not mask[y, x] or gray[y, x] >= 248:
-                cr.append(" ")
-                clr.append("#0d1117")
+                cr.append(" "); clr.append("#0d1117")
             else:
                 px = gray[y, x]
-                idx = int(round((px / 255.0) * NUM_LEVELS))
-                idx = max(0, min(NUM_LEVELS, idx))
-                cr.append(RAMP[idx])
-                clr.append(pixel_to_color(px))
-        chars.append(cr)
-        colors.append(clr)
-
+                idx = max(0, min(NUM_LEVELS, int(round((px / 255.0) * NUM_LEVELS))))
+                cr.append(RAMP[idx]); clr.append(pixel_to_color(px))
+        chars.append(cr); colors.append(clr)
     return chars, colors
 
 
-def render_svg(chars: list, colors: list, output_path: str, cols: int):
-    """
-    Render SVG using textLength to guarantee characters fill the card width.
-    """
-    num_rows = len(chars)
+def render_svg(chars, colors, out_path, cols):
+    rows = len(chars)
+    W = 370
+    PAD = 8
+    TW = W - 2 * PAD  # text area width = 354px
 
-    svg_w = 480
-    x_margin = 6
-    text_w = svg_w - 2 * x_margin  # usable text width
+    # Font size: we want each character to be TW/cols wide
+    # With spacingAndGlyphs, the browser stretches glyphs to fit textLength
+    char_w = TW / cols
+    font_size = char_w / 0.6  # monospace char is ~0.6em wide
+    line_h = font_size * 1.0  # tight — no gaps between rows
 
-    # Font size determines line height only
-    font_size = text_w / (cols * 0.62)  # approximate, but textLength forces fit
-    line_height = font_size * 1.2
-    svg_h = int(num_rows * line_height) + 20
+    H = int(rows * line_h) + 20
+    y0 = font_size + 6
 
-    y_start = font_size + 6
+    L = []
+    L.append(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">')
+    L.append('<style>')
+    L.append('.bg{fill:#0d1117;rx:6;stroke:#30363d;stroke-width:.5}')
+    L.append(f'text{{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;'
+             f'font-size:{font_size:.2f}px;white-space:pre;font-weight:700}}')
+    L.append('</style>')
+    L.append(f'<rect width="{W}" height="{H}" class="bg"/>')
 
-    out = []
-    out.append(f'<svg xmlns="http://www.w3.org/2000/svg" '
-               f'viewBox="0 0 {svg_w} {svg_h}" '
-               f'width="{svg_w}" height="{svg_h}">')
-    out.append('  <style>')
-    out.append('    .bg { fill: #0d1117; rx: 6; stroke: #30363d; stroke-width: 0.5; }')
-    out.append(f'    text {{ font-family: ui-monospace, SFMono-Regular, '
-               f'"SF Mono", Menlo, Consolas, monospace; '
-               f'font-size: {font_size:.2f}px; white-space: pre; '
-               f'letter-spacing: 0; }}')
-    out.append('  </style>')
-    out.append(f'  <rect width="{svg_w}" height="{svg_h}" class="bg"/>')
+    # Animation clip paths
+    L.append('<defs>')
+    for i in range(rows):
+        cy = y0 + i * line_h - font_size
+        d = round(i * 0.012, 3)
+        L.append(f'<clipPath id="r{i}"><rect x="0" y="{cy:.1f}" width="0" height="{line_h + 2:.1f}">'
+                 f'<animate attributeName="width" from="0" to="{W}" begin="{d}s" dur="0.025s" fill="freeze"/>'
+                 f'</rect></clipPath>')
+    L.append('</defs>')
 
-    # Row-by-row animation
-    out.append('  <defs>')
-    for i in range(num_rows):
-        cy = y_start + i * line_height - font_size
-        delay = round(i * 0.012, 3)
-        out.append(f'    <clipPath id="r{i}">')
-        out.append(f'      <rect x="0" y="{cy:.1f}" width="0" height="{line_height + 2:.1f}">')
-        out.append(f'        <animate attributeName="width" from="0" to="{svg_w}" '
-                   f'begin="{delay}s" dur="0.025s" fill="freeze"/>')
-        out.append(f'      </rect>')
-        out.append(f'    </clipPath>')
-    out.append('  </defs>')
-
-    out.append('  <g>')
-    for i in range(num_rows):
-        y_pos = y_start + i * line_height
-        row_chars = chars[i]
-        row_colors = colors[i]
-
-        # Build row with <tspan> color groups
+    L.append('<g>')
+    for i in range(rows):
+        yp = y0 + i * line_h
+        rc, rl = chars[i], colors[i]
         spans = []
         cc, ct = None, ""
-        for ch, col in zip(row_chars, row_colors):
-            esc = html.escape(ch)
-            if col == cc:
-                ct += esc
+        for ch, col in zip(rc, rl):
+            e = html.escape(ch)
+            if col == cc: ct += e
             else:
-                if ct:
-                    spans.append(f'<tspan fill="{cc}">{ct}</tspan>')
-                cc, ct = col, esc
-        if ct:
-            spans.append(f'<tspan fill="{cc}">{ct}</tspan>')
+                if ct: spans.append(f'<tspan fill="{cc}">{ct}</tspan>')
+                cc, ct = col, e
+        if ct: spans.append(f'<tspan fill="{cc}">{ct}</tspan>')
 
-        # textLength forces the row to fill exactly text_w pixels
-        out.append(f'    <text x="{x_margin}" y="{y_pos:.1f}" '
-                   f'textLength="{text_w}" lengthAdjust="spacing" '
-                   f'clip-path="url(#r{i})">'
-                   f'{"".join(spans)}</text>')
+        L.append(f'<text x="{PAD}" y="{yp:.1f}" textLength="{TW}" '
+                 f'lengthAdjust="spacingAndGlyphs" clip-path="url(#r{i})">'
+                 f'{"".join(spans)}</text>')
+    L.append('</g>')
+    L.append('</svg>')
 
-    out.append('  </g>')
-    out.append('</svg>')
-
-    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(out))
-
-    print(f"Generated: '{output_path}' ({svg_w}×{svg_h}px, "
-          f"{num_rows}×{cols}, font: {font_size:.2f}px)")
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(L))
+    print(f"Generated: '{out_path}' ({W}x{H}px, {rows}x{cols}, font={font_size:.1f}px)")
 
 
 def main():
@@ -180,20 +125,16 @@ def main():
     p.add_argument("-i", "--input", default="assets/source-prepped.png")
     p.add_argument("-o", "--output", default="avi-ascii.svg")
     p.add_argument("-w", "--width", type=int, default=100)
-    args = p.parse_args()
+    a = p.parse_args()
+    if not os.path.exists(a.input):
+        print(f"Error: '{a.input}' not found."); sys.exit(1)
 
-    if not os.path.exists(args.input):
-        print(f"Error: '{args.input}' not found."); sys.exit(1)
-
-    print(f"[1/3] Loading '{args.input}', resizing to {args.width} cols...")
-    gray, mask, gw, gh = load_and_resize(args.input, args.width)
-
-    print(f"[2/3] Mapping {gw}x{gh} grid -> {NUM_LEVELS+1}-level ramp...")
-    chars, colors = image_to_ascii(gray, mask)
-
-    print(f"[3/3] Rendering SVG with textLength fill...")
-    render_svg(chars, colors, args.output, gw)
-
+    print(f"[1/3] Loading, resizing to {a.width} cols...")
+    g, m, gw, gh = load_and_resize(a.input, a.width)
+    print(f"[2/3] Mapping {gw}x{gh} -> {NUM_LEVELS+1}-level ramp...")
+    ch, co = to_ascii(g, m)
+    print("[3/3] Rendering SVG...")
+    render_svg(ch, co, a.output, gw)
 
 if __name__ == "__main__":
     main()
