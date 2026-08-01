@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 make_ascii_svg.py
-Converts profile photo into a high-definition, highly detailed ASCII portrait SVG matching the reference artwork.
-Uses 120-column resolution, CLAHE contrast equalization, custom character density mapping, and multi-tone cyan/white terminal styling.
+Converts prepped Head & Shoulders photo into a crisp animated ASCII portrait SVG.
+Uses smooth 10-tier terminal density ramp (@, #, $, %, *, +, =, :, -, .,  ) with multi-tone cyan/blue terminal styling.
 """
 
 import os
@@ -10,81 +10,76 @@ import sys
 import argparse
 import html
 import numpy as np
-from PIL import Image, ImageEnhance, ImageOps
+from PIL import Image
 
-# High-precision character ramp matching the reference portrait
-ASCII_RAMP = ["@", "#", "8", "$", "%", "&", "W", "M", "0", "Q", "P", "+", "=", ":", "-", ".", "."]
+# Smooth 10-tier terminal density ramp from dark/dense (@, #) to light/sparse (., space)
+ASCII_RAMP = ["@", "#", "$", "%", "*", "+", "=", ":", "-", ".", " "]
 
 
 def get_char_color(char: str) -> str:
     """Returns vibrant multi-tone colors matching character density."""
-    if char in ["@", "#", "8"]:
-        return "#ffffff"  # Bright white highlight for dark features/frames
-    elif char in ["$", "%", "&", "W"]:
-        return "#79c0ff"  # Bright cyan
-    elif char in ["M", "0", "Q", "P"]:
+    if char in ["@", "#"]:
+        return "#79c0ff"  # Bright cyan highlight for dark features/shadows
+    elif char in ["$", "%"]:
         return "#58a6ff"  # Primary blue
-    elif char in ["+", "=", ":"]:
+    elif char in ["*", "+"]:
+        return "#a5d6ff"  # Ice blue
+    elif char in ["=", ":"]:
         return "#8b949e"  # Slate gray
     elif char in ["-", "."]:
-        return "#484f58"  # Dim gray background dot
+        return "#484f58"  # Dim gray
     return "#30363d"
 
 
-def image_to_ascii(image_path: str, width: int = 120) -> list:
-    """Converts image to clean high-definition ASCII portrait matching reference design."""
+def image_to_ascii(image_path: str, width: int = 95) -> list:
+    """Converts prepped Head & Shoulders photo to clean ASCII portrait."""
     if not os.path.exists(image_path):
         print(f"Warning: Image '{image_path}' not found. Generating sample avatar pattern.")
         return generate_sample_ascii(width, int(width * 0.52))
 
     img = Image.open(image_path).convert("L")
 
-    # Crop upper 70% (head & shoulders) for maximum facial detail
-    w_orig, h_orig = img.size
-    crop_img = img.crop((0, 0, w_orig, int(h_orig * 0.72)))
-
-    # Apply CLAHE histogram equalization & sharpening for crisp glasses & facial contours
-    equalized = ImageOps.equalize(crop_img)
-    enhanced = ImageEnhance.Contrast(equalized).enhance(1.4)
-    enhanced = ImageEnhance.Sharpness(enhanced).enhance(1.6)
-
     # Monospace aspect ratio correction (~1 : 0.52 ratio)
-    aspect_ratio = enhanced.height / enhanced.width
+    aspect_ratio = img.height / img.width
     height = int(width * aspect_ratio * 0.52)
 
-    img_resized = enhanced.resize((width, height), Image.Resampling.LANCZOS)
+    img_resized = img.resize((width, height), Image.Resampling.LANCZOS)
     np_img = np.array(img_resized)
 
     lines = []
-    num_ramp = len(ASCII_RAMP) - 1
+    num_ramp = len(ASCII_RAMP)
 
     for y in range(height):
         row = []
         for x in range(width):
             px = np_img[y, x]
-            # Map luminance (0..255) to character density
-            idx = min(int((px / 255.0) * num_ramp), num_ramp)
-            char = ASCII_RAMP[idx]
+            # Outer white background (>= 245) -> space ' '
+            if px >= 245:
+                char = " "
+            else:
+                # Direct luminance mapping across 10-tier density ramp
+                idx = min(int((px / 244.0) * (num_ramp - 1)), num_ramp - 1)
+                char = ASCII_RAMP[idx]
             row.append(char)
         lines.append(row)
     return lines
 
 
-def generate_sample_ascii(width: int = 120, height: int = 60) -> list:
+def generate_sample_ascii(width: int = 95, height: int = 48) -> list:
     lines = []
     for y in range(height):
         row = []
         for x in range(width):
-            row.append(".")
+            row.append(" ")
         lines.append(row)
     return lines
 
 
-def render_ascii_svg(lines: list, output_path: str, font_size: float = 4.2, line_height: float = 5.6,
-                     duration_per_line: float = 0.03):
+def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line_height: float = 7.0,
+                     duration_per_line: float = 0.04):
     """Renders ASCII lines into a multi-toned animated SMIL SVG file."""
     num_rows = len(lines)
-    max_cols = max(len(line) for line in lines) if lines else 120
+    max_cols = max(len(line) for line in lines) if lines else 95
 
     svg_width = 370  # Fixed width to fit top row layout
     svg_height = max(500, int(num_rows * line_height) + 24)
@@ -150,14 +145,14 @@ def render_ascii_svg(lines: list, output_path: str, font_size: float = 4.2, line
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(svg_lines))
 
-    print(f"Successfully generated 120-column reference ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
+    print(f"Successfully generated Head & Shoulders ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert photo to reference-matching animated ASCII SVG")
-    parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to input photo")
+    parser = argparse.ArgumentParser(description="Convert prepped Head & Shoulders photo to animated ASCII SVG")
+    parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG")
-    parser.add_argument("--width", "-w", type=int, default=120, help="Character grid width (~115-130)")
+    parser.add_argument("--width", "-w", type=int, default=95, help="Character grid width (~85-100)")
 
     args = parser.parse_args()
 

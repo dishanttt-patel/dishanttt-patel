@@ -3,9 +3,10 @@
 prep_photo.py
 Preprocesses a profile photo for clean ASCII art conversion:
 1. Removes background (via rembg or fallback thresholding).
-2. Applies CLAHE (Contrast Limited Adaptive Histogram Equalization) via OpenCV to enhance facial features/shadows.
-3. Composites onto pure white background so outer areas map to spaces.
-4. Saves to source-prepped.png.
+2. Applies CLAHE contrast enhancement.
+3. Composites subject onto pure white background.
+4. Auto-crops tightly around HEAD AND SHOULDERS (top ~48% of subject height) so facial details fill the box.
+5. Saves to source-prepped.png.
 """
 
 import os
@@ -60,7 +61,7 @@ def process_image(input_path: str, output_path: str, clip_limit: float = 3.0):
     rgb = np_rgba[:, :, :3]
     alpha = np_rgba[:, :, 3] if np_rgba.shape[2] == 4 else np.ones((np_rgba.shape[0], np_rgba.shape[1]), dtype=np.uint8) * 255
 
-    # Step 2: Convert to Grayscale & Apply CLAHE
+    # Step 2: Convert to Grayscale & Apply CLAHE Contrast Boost
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
     clahe_gray = apply_clahe(gray, clip_limit=clip_limit)
 
@@ -70,30 +71,32 @@ def process_image(input_path: str, output_path: str, clip_limit: float = 3.0):
 
     final_gray = (clahe_gray * alpha_factor + white_bg * (1.0 - alpha_factor)).astype(np.uint8)
 
-    # Step 4: Auto-crop tightly around subject
-    non_white_mask = final_gray < 250
+    # Step 4: Tight Head & Shoulders Crop (top ~48% of subject height)
+    non_white_mask = final_gray < 245
     if np.any(non_white_mask):
         y_indices, x_indices = np.where(non_white_mask)
         ymin, ymax = y_indices.min(), y_indices.max()
         xmin, xmax = x_indices.min(), x_indices.max()
-        # Add 3% padding
-        h, w = final_gray.shape
-        pad_y = int((ymax - ymin) * 0.03)
+
+        # Head & shoulders range
+        subj_h = ymax - ymin
+        crop_ymax = min(final_gray.shape[0], ymin + int(subj_h * 0.48))
+        crop_ymin = max(0, ymin - int(subj_h * 0.02))
+
         pad_x = int((xmax - xmin) * 0.03)
-        ymin = max(0, ymin - pad_y)
-        ymax = min(h, ymax + pad_y)
-        xmin = max(0, xmin - pad_x)
-        xmax = min(w, xmax + pad_x)
-        final_gray = final_gray[ymin:ymax, xmin:xmax]
+        crop_xmin = max(0, xmin - pad_x)
+        crop_xmax = min(final_gray.shape[1], xmax + pad_x)
+
+        final_gray = final_gray[crop_ymin:crop_ymax, crop_xmin:crop_xmax]
 
     # Save processed result
     res_img = Image.fromarray(final_gray, mode="L")
     res_img.save(output_path)
-    print(f"Successfully saved prepped & cropped image to '{output_path}'.")
+    print(f"Successfully saved Head & Shoulders prepped image to '{output_path}'.")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Prep photo for ASCII conversion (rembg + CLAHE)")
+    parser = argparse.ArgumentParser(description="Prep photo for ASCII conversion (Head & Shoulders crop + CLAHE)")
     parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to input photo")
     parser.add_argument("--output", "-o", default="assets/source-prepped.png", help="Path to output prepped photo")
     parser.add_argument("--clip-limit", type=float, default=3.0, help="CLAHE contrast clip limit")
