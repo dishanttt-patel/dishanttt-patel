@@ -1,265 +1,377 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 368 367" width="368" height="367">
-<style>
-.bg{fill:#0d1117;rx:8px;stroke:#30363d;stroke-width:1px;}
-.ascii{font-family:Consolas,"Courier New",monospace;font-size:5.2px;font-weight:700;white-space:pre;}
-</style>
-<rect class="bg" width="368" height="367"/>
-<defs>
-<clipPath id="c0">
-<rect x="0" y="12.8" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.000s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c1">
-<rect x="0" y="19.5" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.035s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c2">
-<rect x="0" y="26.2" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.070s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c3">
-<rect x="0" y="32.9" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.105s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c4">
-<rect x="0" y="39.599999999999994" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.140s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c5">
-<rect x="0" y="46.3" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.175s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c6">
-<rect x="0" y="53.0" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.210s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c7">
-<rect x="0" y="59.7" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.245s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c8">
-<rect x="0" y="66.39999999999999" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.280s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c9">
-<rect x="0" y="73.10000000000001" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.315s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c10">
-<rect x="0" y="79.8" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.350s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c11">
-<rect x="0" y="86.5" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.385s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c12">
-<rect x="0" y="93.2" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.420s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c13">
-<rect x="0" y="99.9" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.455s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c14">
-<rect x="0" y="106.6" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.490s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c15">
-<rect x="0" y="113.3" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.525s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c16">
-<rect x="0" y="120.0" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.560s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c17">
-<rect x="0" y="126.7" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.595s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c18">
-<rect x="0" y="133.40000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.630s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c19">
-<rect x="0" y="140.10000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.665s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c20">
-<rect x="0" y="146.8" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.700s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c21">
-<rect x="0" y="153.50000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.735s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c22">
-<rect x="0" y="160.20000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.770s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c23">
-<rect x="0" y="166.9" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.805s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c24">
-<rect x="0" y="173.60000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.840s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c25">
-<rect x="0" y="180.3" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.875s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c26">
-<rect x="0" y="187.00000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.910s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c27">
-<rect x="0" y="193.70000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.945s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c28">
-<rect x="0" y="200.4" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="0.980s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c29">
-<rect x="0" y="207.10000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.015s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c30">
-<rect x="0" y="213.8" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.050s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c31">
-<rect x="0" y="220.50000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.085s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c32">
-<rect x="0" y="227.20000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.120s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c33">
-<rect x="0" y="233.9" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.155s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c34">
-<rect x="0" y="240.60000000000002" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.190s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c35">
-<rect x="0" y="247.3" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.225s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c36">
-<rect x="0" y="254.00000000000006" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.260s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c37">
-<rect x="0" y="260.7" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.295s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c38">
-<rect x="0" y="267.40000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.330s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c39">
-<rect x="0" y="274.1" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.365s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c40">
-<rect x="0" y="280.8" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.400s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c41">
-<rect x="0" y="287.5" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.435s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c42">
-<rect x="0" y="294.20000000000005" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.470s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c43">
-<rect x="0" y="300.90000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.505s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c44">
-<rect x="0" y="307.6" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.540s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c45">
-<rect x="0" y="314.3" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.575s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c46">
-<rect x="0" y="321.0" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.610s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c47">
-<rect x="0" y="327.70000000000005" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.645s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c48">
-<rect x="0" y="334.40000000000003" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.680s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c49">
-<rect x="0" y="341.1" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.715s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-<clipPath id="c50">
-<rect x="0" y="347.8" width="0" height="8.7">
-<animate attributeName="width" from="0" to="368.0" begin="1.750s" dur="0.053s" fill="freeze"/>
-</rect></clipPath>
-</defs>
-<g class="ascii">
-<text x="10" y="18.0" clip-path="url(#c0)"><tspan fill="#484f58">                                . .           . .                               </tspan></text>
-<text x="10" y="24.7" clip-path="url(#c1)"><tspan fill="#484f58">                            ..       .&#x27;&#x27;....        .                           </tspan></text>
-<text x="10" y="31.4" clip-path="url(#c2)"><tspan fill="#484f58">                         ..    ^i_?</tspan><tspan fill="#8b949e">{f</tspan><tspan fill="#8ab4f8">vvzXx</tspan><tspan fill="#8b949e">ft/</tspan><tspan fill="#484f58">]++&gt;i&quot;     . .                     </tspan></text>
-<text x="10" y="38.1" clip-path="url(#c3)"><tspan fill="#484f58">                        .  &#x27;I</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#58a6ff">Om</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#58a6ff">w</tspan><tspan fill="#8ab4f8">0LUUCUYx</tspan><tspan fill="#8b949e">//</tspan><tspan fill="#8ab4f8">XUXJXu</tspan><tspan fill="#8b949e">\[</tspan><tspan fill="#484f58">l,.                        </tspan></text>
-<text x="10" y="44.8" clip-path="url(#c4)"><tspan fill="#484f58">                      .  i</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#8ab4f8">zL</tspan><tspan fill="#58a6ff">hapwOm</tspan><tspan fill="#8ab4f8">LzCQCz</tspan><tspan fill="#8b949e">f(t</tspan><tspan fill="#8ab4f8">vL0Uz</tspan><tspan fill="#8b949e">t\\</tspan><tspan fill="#8ab4f8">YY</tspan><tspan fill="#8b949e">tr}</tspan><tspan fill="#484f58">!&quot;&#x27;&#x27;&#x27;.                 </tspan></text>
-<text x="10" y="51.5" clip-path="url(#c5)"><tspan fill="#484f58">                     . :</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#58a6ff">ppkbhkbbddpmZww</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#8b949e">/{1[</tspan><tspan fill="#484f58">-</tspan><tspan fill="#8b949e">[f</tspan><tspan fill="#8ab4f8">vzu</tspan><tspan fill="#8b949e">|</tspan><tspan fill="#8ab4f8">xQLYCX</tspan><tspan fill="#8b949e">{</tspan><tspan fill="#484f58">i;&quot;`&#x27;               .</tspan></text>
-<text x="10" y="58.2" clip-path="url(#c6)"><tspan fill="#484f58">                      i</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#58a6ff">dk</tspan><tspan fill="#79c0ff">8&amp;W&amp;8WMM#MM**#*</tspan><tspan fill="#58a6ff">hq</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#8b949e">/\)1)|f(</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8ab4f8">zv</tspan><tspan fill="#8b949e">\[}}</tspan><tspan fill="#484f58">&lt;,.                .</tspan></text>
-<text x="10" y="64.9" clip-path="url(#c7)"><tspan fill="#484f58">                   .`</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#58a6ff">OmZbdk</tspan><tspan fill="#79c0ff">WW&amp;@B8M8WM&amp;W&amp;W#M</tspan><tspan fill="#58a6ff">d</tspan><tspan fill="#8ab4f8">C</tspan><tspan fill="#8b949e">t{)\[</tspan><tspan fill="#484f58">&gt;+]</tspan><tspan fill="#8b949e">/t()</tspan><tspan fill="#484f58">&lt;~&lt;-+&#x27;..             .</tspan></text>
-<text x="10" y="71.6" clip-path="url(#c8)"><tspan fill="#484f58">                 ..:</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#8ab4f8">00QC0</tspan><tspan fill="#58a6ff">mmqpaadkpkkdh</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">a</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">pddq</tspan><tspan fill="#8ab4f8">Y</tspan><tspan fill="#484f58">]l!+&gt;&gt;&lt;</tspan><tspan fill="#8b949e">t(</tspan><tspan fill="#484f58">?--&gt;-</tspan><tspan fill="#8b949e">1|)</tspan><tspan fill="#484f58">^.             .</tspan></text>
-<text x="10" y="78.30000000000001" clip-path="url(#c9)"><tspan fill="#484f58">                . ,</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#8ab4f8">zC</tspan><tspan fill="#58a6ff">w</tspan><tspan fill="#8ab4f8">QQ</tspan><tspan fill="#58a6ff">bh</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">hm</tspan><tspan fill="#8ab4f8">0LzYXcUXv</tspan><tspan fill="#58a6ff">Zqqbdkhbm</tspan><tspan fill="#8ab4f8">z</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#484f58">+~&lt;;&lt;</tspan><tspan fill="#8b949e">\f(r</tspan><tspan fill="#8ab4f8">xzYCY</tspan><tspan fill="#484f58">&lt;              .</tspan></text>
-<text x="10" y="85.0" clip-path="url(#c10)"><tspan fill="#484f58">               .`!</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#8ab4f8">CQ</tspan><tspan fill="#58a6ff">pbqawdkp</tspan><tspan fill="#8ab4f8">JJ</tspan><tspan fill="#8b949e">fj|\{{())</tspan><tspan fill="#8ab4f8">xXXJ0</tspan><tspan fill="#58a6ff">pwO</tspan><tspan fill="#8ab4f8">X</tspan><tspan fill="#8b949e">([</tspan><tspan fill="#484f58">+~-_</tspan><tspan fill="#8b949e">/</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#58a6ff">qZ</tspan><tspan fill="#8ab4f8">CL0</tspan><tspan fill="#58a6ff">dZ</tspan><tspan fill="#484f58">_              .</tspan></text>
-<text x="10" y="91.7" clip-path="url(#c11)"><tspan fill="#484f58">               ^~</tspan><tspan fill="#8ab4f8">UQC</tspan><tspan fill="#58a6ff">kbdq</tspan><tspan fill="#79c0ff">M</tspan><tspan fill="#58a6ff">qpwm</tspan><tspan fill="#8ab4f8">xv</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">--+~&lt;~~+-</tspan><tspan fill="#8b949e">{){))|\)1</tspan><tspan fill="#484f58">-!!</tspan><tspan fill="#8b949e">{</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8b949e">[j</tspan><tspan fill="#8ab4f8">C</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">hb</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#58a6ff">wp</tspan><tspan fill="#8b949e">|</tspan><tspan fill="#484f58">.             .</tspan></text>
-<text x="10" y="98.4" clip-path="url(#c12)"><tspan fill="#484f58">              `&gt;</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#58a6ff">qmbhdmq</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#58a6ff">wO</tspan><tspan fill="#8ab4f8">0Yv</tspan><tspan fill="#8b949e">/</tspan><tspan fill="#484f58">_&lt;!;I;;:;;II;::;I?</tspan><tspan fill="#8b949e">1</tspan><tspan fill="#484f58">~^^;:!_</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#79c0ff">@8%W</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#484f58">: .           .</tspan></text>
-<text x="10" y="105.10000000000001" clip-path="url(#c13)"><tspan fill="#484f58">              ..</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#58a6ff">qqdhb</tspan><tspan fill="#8ab4f8">0X</tspan><tspan fill="#58a6ff">a</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">pOZ</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#58a6ff">wO</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#484f58">]&gt;!I;;,&quot;,,,&quot;````,;I,`&#x27;`&quot;;</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#79c0ff">$B*</tspan><tspan fill="#58a6ff">w</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#484f58">^             .</tspan></text>
-<text x="10" y="111.8" clip-path="url(#c14)"><tspan fill="#484f58">                l</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">ak</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">k</tspan><tspan fill="#8ab4f8">C</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#79c0ff">%8*MM</tspan><tspan fill="#58a6ff">h</tspan><tspan fill="#79c0ff">oW*</tspan><tspan fill="#58a6ff">q</tspan><tspan fill="#8ab4f8">Y</tspan><tspan fill="#8b949e">r)</tspan><tspan fill="#484f58">+?&gt;!!!i!I!-</tspan><tspan fill="#8b949e">)</tspan><tspan fill="#8ab4f8">cL</tspan><tspan fill="#58a6ff">mq</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8b949e">r{</tspan><tspan fill="#484f58">!;l</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">q</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#484f58">~ .            .</tspan></text>
-<text x="10" y="118.5" clip-path="url(#c15)"><tspan fill="#484f58">               ..</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">ad</tspan><tspan fill="#8ab4f8">LQ</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8ab4f8">0Jcx</tspan><tspan fill="#8b949e">t\|t</tspan><tspan fill="#8ab4f8">uXvxu</tspan><tspan fill="#8b949e">f)</tspan><tspan fill="#484f58">_+&lt;__-</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#58a6ff">mb</tspan><tspan fill="#79c0ff">#o</tspan><tspan fill="#58a6ff">hpq</tspan><tspan fill="#8ab4f8">Lu</tspan><tspan fill="#8b949e">j)}|{</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#58a6ff">p</tspan><tspan fill="#8b949e">)</tspan><tspan fill="#484f58">               .</tspan></text>
-<text x="10" y="125.2" clip-path="url(#c16)"><tspan fill="#484f58">                 &gt;</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8ab4f8">cx</tspan><tspan fill="#8b949e">1//</tspan><tspan fill="#484f58">?-&lt;!&gt;~&gt;~_]</tspan><tspan fill="#8b949e">[1f</tspan><tspan fill="#8ab4f8">YJLcx</tspan><tspan fill="#8b949e">rf</tspan><tspan fill="#8ab4f8">00YYzUY</tspan><tspan fill="#8b949e">r</tspan><tspan fill="#484f58">?,`&quot;Ii</tspan><tspan fill="#8b949e">{f</tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8b949e">r</tspan><tspan fill="#484f58">,             .</tspan></text>
-<text x="10" y="131.9" clip-path="url(#c17)"><tspan fill="#484f58">                 &#x27;]</tspan><tspan fill="#58a6ff">qO</tspan><tspan fill="#484f58">i </tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#484f58">-&lt;?</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#484f58">]???</tspan><tspan fill="#8b949e">{</tspan><tspan fill="#484f58">?+]</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">_</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#79c0ff">M</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#8b949e">t\</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#8ab4f8">X</tspan><tspan fill="#8b949e">{</tspan><tspan fill="#58a6ff">ObqmZ</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#484f58">&lt;&quot; . `!i </tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#484f58">]&quot; .           .</tspan></text>
-<text x="10" y="138.60000000000002" clip-path="url(#c18)"><tspan fill="#484f58">.               ..</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#79c0ff">#</tspan><tspan fill="#8ab4f8">z</tspan><tspan fill="#484f58">&lt;!+</tspan><tspan fill="#8b949e">)j</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#8b949e">/</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#58a6ff">dq</tspan><tspan fill="#8ab4f8">C</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#8ab4f8">zx</tspan><tspan fill="#8b949e">|)f</tspan><tspan fill="#484f58">_</tspan><tspan fill="#79c0ff">#</tspan><tspan fill="#8b949e">/</tspan><tspan fill="#484f58">^ </tspan><tspan fill="#8b949e">[</tspan><tspan fill="#79c0ff">M</tspan><tspan fill="#484f58">&quot;_</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#58a6ff">kp</tspan><tspan fill="#8ab4f8">Y</tspan><tspan fill="#58a6ff">h</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">h</tspan><tspan fill="#8ab4f8">Y</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#484f58">i;.!</tspan><tspan fill="#8b949e">t</tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#484f58">! .            .</tspan></text>
-<text x="10" y="145.3" clip-path="url(#c19)"><tspan fill="#484f58">                  _</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#8ab4f8">X</tspan><tspan fill="#484f58">;~</tspan><tspan fill="#8b949e">|</tspan><tspan fill="#8ab4f8">c0</tspan><tspan fill="#58a6ff">Z</tspan><tspan fill="#8b949e">/)</tspan><tspan fill="#8ab4f8">Xv</tspan><tspan fill="#8b949e">|</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8ab4f8">cY</tspan><tspan fill="#8b949e">t(/</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#58a6ff">Z</tspan><tspan fill="#484f58">I`.,</tspan><tspan fill="#58a6ff">d</tspan><tspan fill="#484f58">&gt; `</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#8ab4f8">cY</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#8b949e">)</tspan><tspan fill="#484f58">?</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#484f58">+-?</tspan><tspan fill="#8ab4f8">zu</tspan><tspan fill="#484f58">&#x27;              .</tspan></text>
-<text x="10" y="152.0" clip-path="url(#c20)"><tspan fill="#484f58">               .^</tspan><tspan fill="#8b949e">}|\f</tspan><tspan fill="#484f58">]&quot;</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#484f58">_?]</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">+ill&gt;&lt;&lt;&gt;i</tspan><tspan fill="#8b949e">1</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#484f58">]:`&#x27; ?</tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#484f58"> `,!+</tspan><tspan fill="#8b949e">}}}</tspan><tspan fill="#484f58">-]</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#484f58">?&lt;&gt;:;</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#484f58">^               .</tspan></text>
-<text x="10" y="158.70000000000002" clip-path="url(#c21)"><tspan fill="#484f58">              . </tspan><tspan fill="#8b949e">\</tspan><tspan fill="#58a6ff">q</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#8b949e">|(t</tspan><tspan fill="#484f58">~i!;:&quot;^^&quot;^,,,l&lt;</tspan><tspan fill="#8b949e">t)</tspan><tspan fill="#484f58">iI^.&#x27; </tspan><tspan fill="#8b949e">)|</tspan><tspan fill="#484f58">&#x27;^,:,,;:;,^&#x27; ,</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#484f58">~;.              .</tspan></text>
-<text x="10" y="165.4" clip-path="url(#c22)"><tspan fill="#484f58">              . </tspan><tspan fill="#8ab4f8">zY</tspan><tspan fill="#8b949e">|/)}[</tspan><tspan fill="#484f58">~iI,&quot;^^``&quot;,!-</tspan><tspan fill="#8b949e">\}</tspan><tspan fill="#484f58">II:,^.&#x27; </tspan><tspan fill="#8b949e">{j</tspan><tspan fill="#484f58">!I!!lI:&#x27; .,+</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#484f58">!&quot;</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#484f58">`              .</tspan></text>
-<text x="10" y="172.1" clip-path="url(#c23)"><tspan fill="#484f58">              . </tspan><tspan fill="#8b949e">|\</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#8b949e">j){</tspan><tspan fill="#484f58">--_?]__+~</tspan><tspan fill="#8b949e">[|</tspan><tspan fill="#8ab4f8">xx</tspan><tspan fill="#484f58">i;&lt;_illl::&quot; ,</tspan><tspan fill="#8b949e">{||((|)}}[</tspan><tspan fill="#484f58">_&gt;^,Ii&#x27;              .</tspan></text>
-<text x="10" y="178.8" clip-path="url(#c24)"><tspan fill="#484f58">                ,</tspan><tspan fill="#8b949e">1</tspan><tspan fill="#58a6ff">d</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#8b949e">t(}</tspan><tspan fill="#484f58">_&lt;&lt;~-</tspan><tspan fill="#8b949e">1j</tspan><tspan fill="#8ab4f8">JJz</tspan><tspan fill="#8b949e">t\</tspan><tspan fill="#484f58">-</tspan><tspan fill="#8b949e">r</tspan><tspan fill="#8ab4f8">JQc</tspan><tspan fill="#8b949e">)\|</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#58a6ff">qm</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#484f58">l?</tspan><tspan fill="#8ab4f8">YL</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8ab4f8">UXzx</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">,``&quot;;&gt;&lt;.              .</tspan></text>
-<text x="10" y="185.5" clip-path="url(#c25)"><tspan fill="#484f58">              . :</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#58a6ff">bm</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#8b949e">t(((((f</tspan><tspan fill="#58a6ff">Zq</tspan><tspan fill="#8ab4f8">X</tspan><tspan fill="#8b949e">t|j</tspan><tspan fill="#8ab4f8">u0</tspan><tspan fill="#79c0ff">*o*o</tspan><tspan fill="#58a6ff">dZpkh</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#58a6ff">q</tspan><tspan fill="#8b949e">}1j</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#58a6ff">q</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">p</tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#484f58">?~&gt;ill&lt;_.              .</tspan></text>
-<text x="10" y="192.20000000000002" clip-path="url(#c26)"><tspan fill="#484f58">                :</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#58a6ff">qa</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#8b949e">rf</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#8b949e">fj</tspan><tspan fill="#8ab4f8">Y</tspan><tspan fill="#58a6ff">dkqpbhah</tspan><tspan fill="#79c0ff">o%B8WM*%B#</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#484f58">?</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8b949e">{</tspan><tspan fill="#8ab4f8">xX</tspan><tspan fill="#58a6ff">k</tspan><tspan fill="#79c0ff">@$#</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#8b949e">)[</tspan><tspan fill="#484f58">_~~</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">&#x27;              .</tspan></text>
-<text x="10" y="198.9" clip-path="url(#c27)"><tspan fill="#484f58">                 ?</tspan><tspan fill="#58a6ff">h</tspan><tspan fill="#79c0ff">B</tspan><tspan fill="#8ab4f8">Lx</tspan><tspan fill="#8b949e">rt/(\</tspan><tspan fill="#58a6ff">w</tspan><tspan fill="#79c0ff">*&amp;*</tspan><tspan fill="#58a6ff">pmO</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#58a6ff">ZpZ</tspan><tspan fill="#8ab4f8">JccxJ</tspan><tspan fill="#58a6ff">k</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">Z</tspan><tspan fill="#8ab4f8">cU</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#8ab4f8">xzC</tspan><tspan fill="#58a6ff">Z</tspan><tspan fill="#79c0ff">M%Bo</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#484f58">]+~?</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#484f58">.   .          .</tspan></text>
-<text x="10" y="205.6" clip-path="url(#c28)"><tspan fill="#484f58">               . ;</tspan><tspan fill="#8ab4f8">z</tspan><tspan fill="#58a6ff">hb</tspan><tspan fill="#8ab4f8">X</tspan><tspan fill="#8b949e">r\(1</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#58a6ff">Z</tspan><tspan fill="#8ab4f8">zL</tspan><tspan fill="#79c0ff">#@@*</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#8ab4f8">vxv</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8b949e">f/}</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#58a6ff">qdh</tspan><tspan fill="#79c0ff">$$@@8</tspan><tspan fill="#58a6ff">a</tspan><tspan fill="#79c0ff">#</tspan><tspan fill="#58a6ff">k</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">_~~&gt;</tspan><tspan fill="#8b949e">r|</tspan><tspan fill="#484f58"> .             .</tspan></text>
-<text x="10" y="212.3" clip-path="url(#c29)"><tspan fill="#484f58">                   i</tspan><tspan fill="#79c0ff">M</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8b949e">j/1}</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8b949e">1\|(r</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#484f58">~&lt;li:`;&quot; ;:&gt;</tspan><tspan fill="#8b949e">1</tspan><tspan fill="#58a6ff">kZ</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#8b949e">(t</tspan><tspan fill="#8ab4f8">JL</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#484f58">+&lt;i&gt;+?</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#484f58">&quot;               .</tspan></text>
-<text x="10" y="219.0" clip-path="url(#c30)"><tspan fill="#484f58">                  .&#x27;</tspan><tspan fill="#8b949e">)</tspan><tspan fill="#58a6ff">k</tspan><tspan fill="#8ab4f8">Uu</tspan><tspan fill="#8b949e">/)</tspan><tspan fill="#484f58">]?</tspan><tspan fill="#8b949e">()}{{j/|</tspan><tspan fill="#484f58">?~iI:I;&quot;&#x27;&#x27;&#x27;^`&#x27;^;i</tspan><tspan fill="#8b949e">(f</tspan><tspan fill="#484f58">?~&lt;+++</tspan><tspan fill="#8ab4f8">Cv</tspan><tspan fill="#484f58"> .              .</tspan></text>
-<text x="10" y="225.70000000000002" clip-path="url(#c31)"><tspan fill="#484f58">                   &#x27; </tspan><tspan fill="#8b949e">|</tspan><tspan fill="#58a6ff">b</tspan><tspan fill="#8ab4f8">Xu</tspan><tspan fill="#8b949e">j|)\/11|\/fj\{}}</tspan><tspan fill="#484f58">?</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#484f58">]?&lt;&gt;&lt;i&lt;&gt;~-</tspan><tspan fill="#8b949e">)(\){[{</tspan><tspan fill="#8ab4f8">XY</tspan><tspan fill="#484f58">,                .</tspan></text>
-<text x="10" y="232.4" clip-path="url(#c32)"><tspan fill="#484f58">                    .`</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8ab4f8">x</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#8ab4f8">x</tspan><tspan fill="#8b949e">r\)(\</tspan><tspan fill="#8ab4f8">xuzJQQ</tspan><tspan fill="#58a6ff">OO</tspan><tspan fill="#8ab4f8">CCQ</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8ab4f8">QUu</tspan><tspan fill="#8b949e">1</tspan><tspan fill="#484f58">]?]]</tspan><tspan fill="#8b949e">[|/</tspan><tspan fill="#8ab4f8">xX</tspan><tspan fill="#8b949e">f|r\</tspan><tspan fill="#484f58">` .               .</tspan></text>
-<text x="10" y="239.1" clip-path="url(#c33)"><tspan fill="#484f58">                     `&quot;</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#58a6ff">Z</tspan><tspan fill="#8ab4f8">uux</tspan><tspan fill="#8b949e">|{{\///</tspan><tspan fill="#8ab4f8">xXLzzvzYUXu</tspan><tspan fill="#8b949e">/</tspan><tspan fill="#484f58">-+&lt;&lt;~+</tspan><tspan fill="#8b949e">[t</tspan><tspan fill="#8ab4f8">vx</tspan><tspan fill="#8b949e">rr</tspan><tspan fill="#484f58">i                   .</tspan></text>
-<text x="10" y="245.8" clip-path="url(#c34)"><tspan fill="#484f58">                       &lt;</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">p</tspan><tspan fill="#8ab4f8">Cv</tspan><tspan fill="#8b949e">j\}1{</tspan><tspan fill="#484f58">?_+~&lt;&gt;i&gt;il;::,&quot;&quot;,:;!-</tspan><tspan fill="#8b949e">fff{</tspan><tspan fill="#484f58">: .                  .</tspan></text>
-<text x="10" y="252.5" clip-path="url(#c35)"><tspan fill="#484f58">                      . </tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#79c0ff">#</tspan><tspan fill="#58a6ff">pwO</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#8b949e">/|{</tspan><tspan fill="#484f58">?~i&gt;i!!i&gt;I,`.&#x27;&#x27;`&quot;,;-</tspan><tspan fill="#8b949e">(/</tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#8b949e">t</tspan><tspan fill="#484f58">  .                   .</tspan></text>
-<text x="10" y="259.20000000000005" clip-path="url(#c36)"><tspan fill="#484f58">                      . -</tspan><tspan fill="#58a6ff">b</tspan><tspan fill="#79c0ff">o&amp;#</tspan><tspan fill="#58a6ff">h</tspan><tspan fill="#8ab4f8">Qu</tspan><tspan fill="#8b949e">/\([</tspan><tspan fill="#484f58">_+!!&gt;__&gt;!;:I;I&gt;</tspan><tspan fill="#8b949e">}t</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8ab4f8">v</tspan><tspan fill="#484f58">&#x27;                      .</tspan></text>
-<text x="10" y="265.9" clip-path="url(#c37)"><tspan fill="#484f58">                      . ~</tspan><tspan fill="#8ab4f8">X</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#79c0ff">W%B&amp;o</tspan><tspan fill="#58a6ff">q</tspan><tspan fill="#8ab4f8">QJJ</tspan><tspan fill="#8b949e">j11[1(t(){[})\</tspan><tspan fill="#8ab4f8">zC</tspan><tspan fill="#58a6ff">w</tspan><tspan fill="#8ab4f8">0c</tspan><tspan fill="#484f58">^                       .</tspan></text>
-<text x="10" y="272.6" clip-path="url(#c38)"><tspan fill="#484f58">                      . ?</tspan><tspan fill="#8ab4f8">xv0</tspan><tspan fill="#58a6ff">md</tspan><tspan fill="#79c0ff">&amp;@@B#</tspan><tspan fill="#58a6ff">abZ</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#58a6ff">mm</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#58a6ff">mmp</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#58a6ff">bOqbpw</tspan><tspan fill="#8ab4f8">J</tspan><tspan fill="#8b949e">t</tspan><tspan fill="#484f58">&lt;                        .</tspan></text>
-<text x="10" y="279.3" clip-path="url(#c39)"><tspan fill="#484f58">.......... .  . . . .  &#x27;</tspan><tspan fill="#8b949e">)jjjr</tspan><tspan fill="#8ab4f8">zC</tspan><tspan fill="#58a6ff">dk</tspan><tspan fill="#79c0ff">*B%BB8$&amp;</tspan><tspan fill="#58a6ff">a</tspan><tspan fill="#79c0ff">W8&amp;*8#</tspan><tspan fill="#58a6ff">p</tspan><tspan fill="#8ab4f8">0c</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#484f58">-&lt;!.                       .</tspan></text>
-<text x="10" y="286.0" clip-path="url(#c40)"><tspan fill="#484f58">                      ,</tspan><tspan fill="#8b949e">}\/</tspan><tspan fill="#8ab4f8">x</tspan><tspan fill="#8b949e">jfffj</tspan><tspan fill="#8ab4f8">vXL</tspan><tspan fill="#58a6ff">mkh</tspan><tspan fill="#79c0ff">o#&amp;</tspan><tspan fill="#58a6ff">hh</tspan><tspan fill="#79c0ff">*</tspan><tspan fill="#58a6ff">qkm</tspan><tspan fill="#8ab4f8">z</tspan><tspan fill="#8b949e">/[</tspan><tspan fill="#484f58">+&lt;&gt;&gt;i                        .</tspan></text>
-<text x="10" y="292.7" clip-path="url(#c41)"><tspan fill="#484f58">??]-+__+~iI;,^&#x27;,~]</tspan><tspan fill="#8b949e">{{}}(/</tspan><tspan fill="#8ab4f8">uvXcv</tspan><tspan fill="#8b949e">r</tspan><tspan fill="#8ab4f8">x</tspan><tspan fill="#8b949e">r</tspan><tspan fill="#8ab4f8">cvXQQLQ0Q0LLYx</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#484f58">]+i!!&gt;&gt;i^  .                    .</tspan></text>
-<text x="10" y="299.40000000000003" clip-path="url(#c42)"><tspan fill="#79c0ff">o*</tspan><tspan fill="#58a6ff">khkabhbq</tspan><tspan fill="#8ab4f8">QJzvxY</tspan><tspan fill="#58a6ff">qbdbdqq</tspan><tspan fill="#8ab4f8">00LJJYzvxcczzYJJCUUYu</tspan><tspan fill="#8b949e">/{</tspan><tspan fill="#484f58">?_&lt;&gt;i&gt;&gt;ill`                      .</tspan></text>
-<text x="10" y="306.1" clip-path="url(#c43)"><tspan fill="#58a6ff">dwmpwZqqwpqwwdbkdh</tspan><tspan fill="#79c0ff">oM**o</tspan><tspan fill="#58a6ff">a</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">kdm</tspan><tspan fill="#8ab4f8">QQLzYcvcucc</tspan><tspan fill="#8b949e">rt\()1}</tspan><tspan fill="#484f58">]+&gt;&gt;&gt;&lt;&gt;!Il;&quot;&lt;I&quot;&#x27;                 .</tspan></text>
-<text x="10" y="312.8" clip-path="url(#c44)"><tspan fill="#58a6ff">OmZZwddbk</tspan><tspan fill="#79c0ff">o</tspan><tspan fill="#58a6ff">h</tspan><tspan fill="#79c0ff">###*W#o</tspan><tspan fill="#58a6ff">kb</tspan><tspan fill="#79c0ff">*WWMM##o</tspan><tspan fill="#58a6ff">had</tspan><tspan fill="#8ab4f8">0Yxzu</tspan><tspan fill="#8b949e">t|{</tspan><tspan fill="#484f58">]_&gt;&lt;~-?_~ii&lt;&lt;il:&quot;,;</tspan><tspan fill="#8b949e">1{{</tspan><tspan fill="#484f58">-!^.    .     .   .</tspan></text>
-<text x="10" y="319.5" clip-path="url(#c45)"><tspan fill="#8ab4f8">CLLQ0</tspan><tspan fill="#58a6ff">mZwZqh</tspan><tspan fill="#79c0ff">o##**oo*</tspan><tspan fill="#58a6ff">hbh</tspan><tspan fill="#79c0ff">#*W&amp;&amp;8&amp;&amp;8W</tspan><tspan fill="#58a6ff">b</tspan><tspan fill="#8ab4f8">C</tspan><tspan fill="#8b949e">\{{</tspan><tspan fill="#484f58">-~iI;:;l&gt;&gt;!l!il;^`_</tspan><tspan fill="#8b949e">)ff){[</tspan><tspan fill="#484f58">]+&gt;!:&quot;`&#x27;.        .</tspan></text>
-<text x="10" y="326.2" clip-path="url(#c46)"><tspan fill="#8ab4f8">YXJYXC00QQL</tspan><tspan fill="#58a6ff">Zdhaa</tspan><tspan fill="#79c0ff">oo</tspan><tspan fill="#58a6ff">ahkbdbbh</tspan><tspan fill="#79c0ff">#%888&amp;W8</tspan><tspan fill="#58a6ff">b</tspan><tspan fill="#8b949e">t</tspan><tspan fill="#484f58">l!!I,&quot;^&quot;,;I:,,,&quot;`:</tspan><tspan fill="#8ab4f8">cQ</tspan><tspan fill="#8b949e">rjt{}\j/1</tspan><tspan fill="#484f58">]]</tspan><tspan fill="#8b949e">[</tspan><tspan fill="#484f58">~~~+~&lt;&lt;illli</tspan></text>
-<text x="10" y="332.90000000000003" clip-path="url(#c47)"><tspan fill="#8b949e">rrrr</tspan><tspan fill="#8ab4f8">vcvY0JzCCJ</tspan><tspan fill="#58a6ff">mqppddpppwmwpa</tspan><tspan fill="#79c0ff">W%8&amp;WWWo</tspan><tspan fill="#8ab4f8">Y</tspan><tspan fill="#484f58">~^`^&quot;&quot;^^&quot;&quot;^^`&#x27;&quot;</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#8ab4f8">LX</tspan><tspan fill="#8b949e">\\/\{t</tspan><tspan fill="#8ab4f8">X0Lc</tspan><tspan fill="#8b949e">ff))}</tspan><tspan fill="#484f58">?</tspan><tspan fill="#8b949e">[}|</tspan><tspan fill="#8ab4f8">cc</tspan><tspan fill="#8b949e">jf\</tspan><tspan fill="#8ab4f8">u</tspan></text>
-<text x="10" y="339.6" clip-path="url(#c48)"><tspan fill="#8b949e">|()/\\</tspan><tspan fill="#8ab4f8">xczXzucuzzUC0YCLL0JCXcC</tspan><tspan fill="#58a6ff">b</tspan><tspan fill="#79c0ff">&amp;B&amp;MW#8W</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#8b949e">1</tspan><tspan fill="#484f58">I. &#x27;^&quot;^``.&gt;</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#58a6ff">m</tspan><tspan fill="#8ab4f8">U</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#8ab4f8">xvczxXY0</tspan><tspan fill="#58a6ff">O</tspan><tspan fill="#8ab4f8">Ux</tspan><tspan fill="#8b949e">t|\\)|(}/</tspan><tspan fill="#8ab4f8">zXYUQ</tspan></text>
-<text x="10" y="346.3" clip-path="url(#c49)"><tspan fill="#8b949e">)/((1{1\/fj\t/|(|j</tspan><tspan fill="#8ab4f8">u</tspan><tspan fill="#8b949e">tjjjrjf</tspan><tspan fill="#8ab4f8">x</tspan><tspan fill="#8b949e">t)[f</tspan><tspan fill="#8ab4f8">0</tspan><tspan fill="#79c0ff">#%&amp;8W&amp;$@#</tspan><tspan fill="#8ab4f8">L</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#484f58">&gt;` `&#x27;:</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#58a6ff">wd</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#8ab4f8">vCYYJLQ</tspan><tspan fill="#58a6ff">dqZ</tspan><tspan fill="#8ab4f8">Lx</tspan><tspan fill="#8b949e">/t</tspan><tspan fill="#8ab4f8">xzuJY</tspan><tspan fill="#8b949e">rfr</tspan><tspan fill="#8ab4f8">xcCU</tspan></text>
-<text x="10" y="353.0" clip-path="url(#c50)"><tspan fill="#8b949e">\\))1{[[[))()|)}}{}</tspan><tspan fill="#484f58">]</tspan><tspan fill="#8b949e">1))}1{){{}</tspan><tspan fill="#484f58">-_</tspan><tspan fill="#8b949e">}</tspan><tspan fill="#8ab4f8">c</tspan><tspan fill="#58a6ff">p</tspan><tspan fill="#79c0ff">#88W8@B#</tspan><tspan fill="#58a6ff">d</tspan><tspan fill="#8ab4f8">Q</tspan><tspan fill="#8b949e">\</tspan><tspan fill="#484f58">!+</tspan><tspan fill="#8b949e">j</tspan><tspan fill="#58a6ff">dq</tspan><tspan fill="#8ab4f8">QUYUYC</tspan><tspan fill="#58a6ff">Zqdhbdq</tspan><tspan fill="#8ab4f8">Xu</tspan><tspan fill="#8b949e">x</tspan><tspan fill="#8ab4f8">zYJUUYUvXc</tspan><tspan fill="#8b949e">f</tspan><tspan fill="#8ab4f8">cY</tspan></text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370 500" width="370" height="500">
+  <style>
+    .bg { fill: #0d1117; rx: 8px; stroke: #30363d; stroke-width: 1px; }
+    .ascii-text { font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Courier New", monospace; font-size: 4.6px; white-space: pre; font-weight: 700; }
+  </style>
+  <rect width="370" height="500" class="bg" />
+  <defs>
+    <clipPath id="clip-row-0">
+      <rect x="8" y="13.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.0s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-1">
+      <rect x="8" y="19.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.035s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-2">
+      <rect x="8" y="25.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.07s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-3">
+      <rect x="8" y="31.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.105s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-4">
+      <rect x="8" y="37.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.14s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-5">
+      <rect x="8" y="43.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.175s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-6">
+      <rect x="8" y="49.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.21s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-7">
+      <rect x="8" y="55.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.245s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-8">
+      <rect x="8" y="61.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.28s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-9">
+      <rect x="8" y="67.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.315s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-10">
+      <rect x="8" y="73.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.35s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-11">
+      <rect x="8" y="79.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.385s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-12">
+      <rect x="8" y="85.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.42s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-13">
+      <rect x="8" y="91.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.455s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-14">
+      <rect x="8" y="97.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.49s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-15">
+      <rect x="8" y="103.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.525s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-16">
+      <rect x="8" y="109.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.56s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-17">
+      <rect x="8" y="115.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.595s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-18">
+      <rect x="8" y="121.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.63s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-19">
+      <rect x="8" y="127.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.665s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-20">
+      <rect x="8" y="133.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.7s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-21">
+      <rect x="8" y="139.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.735s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-22">
+      <rect x="8" y="145.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.77s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-23">
+      <rect x="8" y="151.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.805s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-24">
+      <rect x="8" y="157.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.84s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-25">
+      <rect x="8" y="163.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.875s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-26">
+      <rect x="8" y="169.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.91s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-27">
+      <rect x="8" y="175.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.945s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-28">
+      <rect x="8" y="181.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="0.98s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-29">
+      <rect x="8" y="187.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.015s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-30">
+      <rect x="8" y="193.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.05s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-31">
+      <rect x="8" y="199.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.085s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-32">
+      <rect x="8" y="205.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.12s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-33">
+      <rect x="8" y="211.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.155s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-34">
+      <rect x="8" y="217.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.19s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-35">
+      <rect x="8" y="223.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.225s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-36">
+      <rect x="8" y="229.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.26s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-37">
+      <rect x="8" y="235.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.295s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-38">
+      <rect x="8" y="241.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.33s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-39">
+      <rect x="8" y="247.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.365s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-40">
+      <rect x="8" y="253.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.4s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-41">
+      <rect x="8" y="259.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.435s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-42">
+      <rect x="8" y="265.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.47s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-43">
+      <rect x="8" y="271.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.505s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-44">
+      <rect x="8" y="277.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.54s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-45">
+      <rect x="8" y="283.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.575s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-46">
+      <rect x="8" y="289.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.61s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-47">
+      <rect x="8" y="295.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.645s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-48">
+      <rect x="8" y="301.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.68s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-49">
+      <rect x="8" y="307.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.715s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-50">
+      <rect x="8" y="313.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.75s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-51">
+      <rect x="8" y="319.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.785s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-52">
+      <rect x="8" y="325.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.82s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-53">
+      <rect x="8" y="331.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.855s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-54">
+      <rect x="8" y="337.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.89s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-55">
+      <rect x="8" y="343.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.925s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-56">
+      <rect x="8" y="349.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.96s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-57">
+      <rect x="8" y="355.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="1.995s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-58">
+      <rect x="8" y="361.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="2.03s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-59">
+      <rect x="8" y="367.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="2.065s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+    <clipPath id="clip-row-60">
+      <rect x="8" y="373.4" width="0" height="8.0">
+        <animate attributeName="width" from="0" to="354" begin="2.1s" dur="0.053s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />
+      </rect>
+    </clipPath>
+  </defs>
+  <g class="ascii-text">
+    <text x="10" y="18.0" clip-path="url(#clip-row-0)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="24.0" clip-path="url(#clip-row-1)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="30.0" clip-path="url(#clip-row-2)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="36.0" clip-path="url(#clip-row-3)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="42.0" clip-path="url(#clip-row-4)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="48.0" clip-path="url(#clip-row-5)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="54.0" clip-path="url(#clip-row-6)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="60.0" clip-path="url(#clip-row-7)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="66.0" clip-path="url(#clip-row-8)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="72.0" clip-path="url(#clip-row-9)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="78.0" clip-path="url(#clip-row-10)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="84.0" clip-path="url(#clip-row-11)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="90.0" clip-path="url(#clip-row-12)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="96.0" clip-path="url(#clip-row-13)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="102.0" clip-path="url(#clip-row-14)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="108.0" clip-path="url(#clip-row-15)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="114.0" clip-path="url(#clip-row-16)"><tspan fill="#484f58">..............................................................................................................</tspan></text>
+    <text x="10" y="120.0" clip-path="url(#clip-row-17)"><tspan fill="#484f58">..............................................</tspan><tspan fill="#8b949e">:=</tspan><tspan fill="#58a6ff">PQM</tspan><tspan fill="#79c0ff">W&amp;&amp;&amp;&amp;&amp;W&amp;W</tspan><tspan fill="#58a6ff">MMQ</tspan><tspan fill="#8b949e">+=:</tspan><tspan fill="#484f58">-...........................................</tspan></text>
+    <text x="10" y="126.0" clip-path="url(#clip-row-18)"><tspan fill="#484f58">..........................................</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">#@@@@@@@@@@@@@@@@@##88</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#484f58">.......................................</tspan></text>
+    <text x="10" y="132.0" clip-path="url(#clip-row-19)"><tspan fill="#484f58">......................................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">#@@@@@@@@@@@@@@@@#####@@@@@@@#</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">-..................................</tspan></text>
+    <text x="10" y="138.0" clip-path="url(#clip-row-20)"><tspan fill="#484f58">...................................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">#@@@@@@@@@@@@@@@@@@@#@@@@@@###8888##8</tspan><tspan fill="#79c0ff">$W</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">-...............................</tspan></text>
+    <text x="10" y="144.0" clip-path="url(#clip-row-21)"><tspan fill="#484f58">.................................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@#88#####@###888##88##8</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#58a6ff">0P</tspan><tspan fill="#8b949e">+==</tspan><tspan fill="#484f58">-........................</tspan></text>
+    <text x="10" y="150.0" clip-path="url(#clip-row-22)"><tspan fill="#484f58">................................</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@#####888####88888#88888</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#58a6ff">MP</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">..........................</tspan></text>
+    <text x="10" y="156.0" clip-path="url(#clip-row-23)"><tspan fill="#484f58">..............................-</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@##8888888</tspan><tspan fill="#79c0ff">$$</tspan><tspan fill="#ffffff">888</tspan><tspan fill="#79c0ff">$$%$$%</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">.........................</tspan></text>
+    <text x="10" y="162.0" clip-path="url(#clip-row-24)"><tspan fill="#484f58">.............................</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#ffffff">8@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@####8</tspan><tspan fill="#79c0ff">$$$$%$</tspan><tspan fill="#ffffff">88</tspan><tspan fill="#79c0ff">$$%%%&amp;&amp;&amp;</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#484f58">-.......................</tspan></text>
+    <text x="10" y="168.0" clip-path="url(#clip-row-25)"><tspan fill="#484f58">...........................</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#88888</tspan><tspan fill="#79c0ff">%&amp;%%</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$$$$&amp;&amp;&amp;%%$&amp;</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="174.0" clip-path="url(#clip-row-26)"><tspan fill="#484f58">..........................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#</tspan><tspan fill="#79c0ff">$$%$%$%&amp;</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$$%%%&amp;%$$$</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="180.0" clip-path="url(#clip-row-27)"><tspan fill="#484f58">.........................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#</tspan><tspan fill="#79c0ff">$$%%%&amp;%$$</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$$</tspan><tspan fill="#ffffff">8888888</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="186.0" clip-path="url(#clip-row-28)"><tspan fill="#484f58">.......................-</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@##8</tspan><tspan fill="#79c0ff">$%%%%$</tspan><tspan fill="#ffffff">88#8#8######</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="192.0" clip-path="url(#clip-row-29)"><tspan fill="#484f58">......................-</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#ffffff">8@@@@@@@@@@@@@@@@@@@@@@@@######@@@@@@@@@@##8</tspan><tspan fill="#79c0ff">$$$%$$%$$</tspan><tspan fill="#ffffff">8#######@##</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="198.0" clip-path="url(#clip-row-30)"><tspan fill="#484f58">......................</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#ffffff">8@@@@@@@@@@@@@@@@@@@@#####8888888#########8888</tspan><tspan fill="#79c0ff">$%&amp;&amp;%$%$$</tspan><tspan fill="#ffffff">8#@@@@##@#8</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="204.0" clip-path="url(#clip-row-31)"><tspan fill="#484f58">....................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#ffffff">#@@@@@@@@@@@@@@@@@@@@@#88</tspan><tspan fill="#79c0ff">$$$$$%%%%%%%%%%&amp;&amp;&amp;%%%</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$%&amp;</tspan><tspan fill="#58a6ff">MM</tspan><tspan fill="#79c0ff">WW&amp;&amp;%$</tspan><tspan fill="#ffffff">#@@@@@@#8</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="210.0" clip-path="url(#clip-row-32)"><tspan fill="#484f58">....................-</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@##8</tspan><tspan fill="#79c0ff">$$$%&amp;&amp;WW</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#79c0ff">WWWW</tspan><tspan fill="#58a6ff">MM0MMM</tspan><tspan fill="#79c0ff">W&amp;%&amp;W</tspan><tspan fill="#58a6ff">MMM00M</tspan><tspan fill="#79c0ff">W&amp;%</tspan><tspan fill="#ffffff">@@@@@@##</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="216.0" clip-path="url(#clip-row-33)"><tspan fill="#484f58">......................</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@#88</tspan><tspan fill="#79c0ff">$%%&amp;WWWWWWW</tspan><tspan fill="#58a6ff">MMMMMM</tspan><tspan fill="#79c0ff">WW&amp;&amp;&amp;&amp;WW</tspan><tspan fill="#58a6ff">M00MM</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">@@@@@@#</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="222.0" clip-path="url(#clip-row-34)"><tspan fill="#484f58">......................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#ffffff">#@@@@@@@@@@@@@@@@@@@@@@@@@@#888</tspan><tspan fill="#79c0ff">$%%&amp;&amp;&amp;&amp;&amp;WW&amp;%$$</tspan><tspan fill="#ffffff">88###8#8</tspan><tspan fill="#79c0ff">$%&amp;WWW%</tspan><tspan fill="#ffffff">#@@##</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="228.0" clip-path="url(#clip-row-35)"><tspan fill="#484f58">.......................</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">@@@@@@@@@@@@@@@@@@@@@@@@@@@##8</tspan><tspan fill="#79c0ff">$$$$$$%%%$</tspan><tspan fill="#ffffff">8##@@@@@@@@#88</tspan><tspan fill="#79c0ff">$%&amp;&amp;%&amp;</tspan><tspan fill="#ffffff">8@#8</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="234.0" clip-path="url(#clip-row-36)"><tspan fill="#484f58">.......................</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#ffffff">@@@@@@@@##@####8##############88</tspan><tspan fill="#79c0ff">$$$$$$$</tspan><tspan fill="#ffffff">8#####888</tspan><tspan fill="#79c0ff">$$%&amp;&amp;&amp;%%%$$</tspan><tspan fill="#ffffff">88#8</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="240.0" clip-path="url(#clip-row-37)"><tspan fill="#484f58">........................</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@@@@@88#@####888##88#####88#@@@@###88##</tspan><tspan fill="#79c0ff">$$$</tspan><tspan fill="#ffffff">88888</tspan><tspan fill="#79c0ff">$%W</tspan><tspan fill="#58a6ff">MQQQ0M</tspan><tspan fill="#79c0ff">W$&amp;</tspan><tspan fill="#ffffff">8@@@#</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="246.0" clip-path="url(#clip-row-38)"><tspan fill="#484f58">........................</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">@@@</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#ffffff">@#################888@@@#8</tspan><tspan fill="#79c0ff">%W</tspan><tspan fill="#ffffff">8@8</tspan><tspan fill="#79c0ff">&amp;$</tspan><tspan fill="#ffffff">8###888</tspan><tspan fill="#79c0ff">%&amp;</tspan><tspan fill="#58a6ff">MQ</tspan><tspan fill="#8b949e">++</tspan><tspan fill="#58a6ff">PQ0Q</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">-</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@8</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="252.0" clip-path="url(#clip-row-39)"><tspan fill="#484f58">........................-</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@@#</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#484f58">.</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#ffffff">@8##@@@@@@@@#@######</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">8@#</tspan><tspan fill="#79c0ff">%W</tspan><tspan fill="#58a6ff">00</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">@</tspan><tspan fill="#79c0ff">W%</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">###88888</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#58a6ff">MQQ0000</tspan><tspan fill="#484f58">..</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#ffffff">#</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#484f58">....................</tspan></text>
+    <text x="10" y="258.0" clip-path="url(#clip-row-40)"><tspan fill="#484f58">.........................</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#ffffff">@@8</tspan><tspan fill="#79c0ff">W%</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#ffffff">#@@@@#</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">@@@@@8@@@@###88@8</tspan><tspan fill="#58a6ff">MP</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#ffffff">@#</tspan><tspan fill="#58a6ff">Q00M</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">###</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">8@@@@8</tspan><tspan fill="#79c0ff">%%$W</tspan><tspan fill="#58a6ff">MQ</tspan><tspan fill="#484f58">.</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">88</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#484f58">.....................</tspan></text>
+    <text x="10" y="264.0" clip-path="url(#clip-row-41)"><tspan fill="#484f58">.........................</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#ffffff">@@@</tspan><tspan fill="#8b949e">+=</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">#@@@@@##@#####@@@#####@</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">--</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#ffffff">@</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#58a6ff">P0</tspan><tspan fill="#79c0ff">%$$</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$%WW%$%&amp;</tspan><tspan fill="#58a6ff">MM00</tspan><tspan fill="#ffffff">#</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="270.0" clip-path="url(#clip-row-42)"><tspan fill="#484f58">.......................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">QM</tspan><tspan fill="#ffffff">8#@</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#484f58">-</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">#8#####8888888#8888##@</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">-</tspan><tspan fill="#8b949e">==</tspan><tspan fill="#79c0ff">$$</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#8b949e">++</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#79c0ff">W&amp;&amp;%%%%%&amp;%%%&amp;W</tspan><tspan fill="#58a6ff">MM</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">.</tspan><tspan fill="#79c0ff">%$</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="276.0" clip-path="url(#clip-row-43)"><tspan fill="#484f58">......................</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#ffffff">#@@#8#8</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$%%%%&amp;&amp;&amp;&amp;&amp;&amp;&amp;%%%$$$$</tspan><tspan fill="#ffffff">#8</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">-</tspan><tspan fill="#8b949e">:=+</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#58a6ff">PPPQ0MMMMMM</tspan><tspan fill="#79c0ff">WW</tspan><tspan fill="#58a6ff">M0PPP</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#484f58">.......................</tspan></text>
+    <text x="10" y="282.0" clip-path="url(#clip-row-44)"><tspan fill="#484f58">......................</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#ffffff">@####8#</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#79c0ff">%$%&amp;&amp;WWWWWWW&amp;%%%$$$</tspan><tspan fill="#ffffff">#8</tspan><tspan fill="#79c0ff">$%&amp;</tspan><tspan fill="#58a6ff">MP</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#484f58">-</tspan><tspan fill="#8b949e">==</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">MQQ0000Q0000QP</tspan><tspan fill="#8b949e">=====</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#58a6ff">QQP</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="288.0" clip-path="url(#clip-row-45)"><tspan fill="#484f58">......................</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@8##8888</tspan><tspan fill="#79c0ff">%WW&amp;&amp;&amp;&amp;&amp;&amp;&amp;W&amp;&amp;%%%$$</tspan><tspan fill="#ffffff">8#8</tspan><tspan fill="#79c0ff">%%&amp;W</tspan><tspan fill="#58a6ff">M0P</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#484f58">.</tspan><tspan fill="#8b949e">==</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#79c0ff">$&amp;</tspan><tspan fill="#58a6ff">PQMMMMMMMQP</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#484f58">-.</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#79c0ff">WW</tspan><tspan fill="#8b949e">++</tspan><tspan fill="#58a6ff">QM</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="294.0" clip-path="url(#clip-row-46)"><tspan fill="#484f58">......................</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#ffffff">@8##888</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">88</tspan><tspan fill="#79c0ff">%%&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;%%$$</tspan><tspan fill="#ffffff">88</tspan><tspan fill="#79c0ff">$$$$%&amp;WWW</tspan><tspan fill="#58a6ff">0Q</tspan><tspan fill="#8b949e">+++==</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#58a6ff">MMMM</tspan><tspan fill="#79c0ff">WW</tspan><tspan fill="#58a6ff">MM0QPPQ00P</tspan><tspan fill="#8b949e">=+</tspan><tspan fill="#58a6ff">PPP</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="300.0" clip-path="url(#clip-row-47)"><tspan fill="#484f58">......................</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#ffffff">#8@#8888</tspan><tspan fill="#79c0ff">$$$$$</tspan><tspan fill="#ffffff">8888888#@@@@</tspan><tspan fill="#79c0ff">$$$</tspan><tspan fill="#ffffff">8#8</tspan><tspan fill="#79c0ff">$$%%%&amp;&amp;&amp;W</tspan><tspan fill="#58a6ff">0P</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#79c0ff">$$$$$$$$$$$&amp;</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#8b949e">=:=+</tspan><tspan fill="#58a6ff">PPPP</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="306.0" clip-path="url(#clip-row-48)"><tspan fill="#484f58">.......................</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">#@##888</tspan><tspan fill="#79c0ff">$$$$$$$</tspan><tspan fill="#ffffff">88#@@@######@@@@#8888#@@@#</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#79c0ff">W$$</tspan><tspan fill="#ffffff">888</tspan><tspan fill="#79c0ff">$$$%%</tspan><tspan fill="#58a6ff">MQ</tspan><tspan fill="#8b949e">++</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#8b949e">++</tspan><tspan fill="#58a6ff">PQQQ</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="312.0" clip-path="url(#clip-row-49)"><tspan fill="#484f58">......................-</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">#@@##888888888#@@@######@@@@@@@@#######@8</tspan><tspan fill="#79c0ff">&amp;%%$</tspan><tspan fill="#ffffff">88##8</tspan><tspan fill="#79c0ff">$%&amp;W</tspan><tspan fill="#58a6ff">M00QQPPQ0Q</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="318.0" clip-path="url(#clip-row-50)"><tspan fill="#484f58">.......................</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">8@@##########@@@@#@@@@@@@@@@@@@@@@@@@@8</tspan><tspan fill="#79c0ff">%WWW&amp;%$$</tspan><tspan fill="#ffffff">8#@@#</tspan><tspan fill="#79c0ff">$%&amp;W</tspan><tspan fill="#58a6ff">MMM0000Q</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="324.0" clip-path="url(#clip-row-51)"><tspan fill="#484f58">.......................</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#ffffff">#@@@######8##@@@@@@@@@@@@@@@@@@##@@@@#</tspan><tspan fill="#79c0ff">$&amp;%&amp;&amp;&amp;&amp;$$$</tspan><tspan fill="#ffffff">8#@@@8</tspan><tspan fill="#79c0ff">$%&amp;W</tspan><tspan fill="#58a6ff">MM00M0</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="330.0" clip-path="url(#clip-row-52)"><tspan fill="#484f58">.......................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#ffffff">8@@@######88#@@@@@@@@@@@@@@##8888</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">8###8</tspan><tspan fill="#79c0ff">$$%%%%%$$</tspan><tspan fill="#ffffff">8#@@@#</tspan><tspan fill="#79c0ff">%&amp;WW</tspan><tspan fill="#58a6ff">M000</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="336.0" clip-path="url(#clip-row-53)"><tspan fill="#484f58">........................</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">@@@@######88#@@@@@@@@@@@#####</tspan><tspan fill="#79c0ff">$$$</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$$$</tspan><tspan fill="#ffffff">8####@####@####88</tspan><tspan fill="#79c0ff">&amp;W</tspan><tspan fill="#58a6ff">MMM00M</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#484f58">......................</tspan></text>
+    <text x="10" y="342.0" clip-path="url(#clip-row-54)"><tspan fill="#484f58">.........................</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">@@@###8888######@@@@@8</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">%%&amp;</tspan><tspan fill="#58a6ff">0Q0</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#58a6ff">0PQ</tspan><tspan fill="#79c0ff">W</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#79c0ff">&amp;&amp;%</tspan><tspan fill="#ffffff">@@@@@#888</tspan><tspan fill="#79c0ff">$%&amp;W</tspan><tspan fill="#58a6ff">M00M0M</tspan><tspan fill="#79c0ff">W%</tspan><tspan fill="#484f58">-......................</tspan></text>
+    <text x="10" y="348.0" clip-path="url(#clip-row-55)"><tspan fill="#484f58">..........................</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#ffffff">8@@####88888#8888####8</tspan><tspan fill="#79c0ff">%$&amp;&amp;&amp;</tspan><tspan fill="#58a6ff">0QQ0PP</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#8b949e">=</tspan><tspan fill="#58a6ff">P0</tspan><tspan fill="#79c0ff">W%&amp;W</tspan><tspan fill="#58a6ff">M0M</tspan><tspan fill="#79c0ff">W&amp;%&amp;W</tspan><tspan fill="#58a6ff">MMM00MMM</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#484f58">.......................</tspan></text>
+    <text x="10" y="354.0" clip-path="url(#clip-row-56)"><tspan fill="#484f58">...........................</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#ffffff">8@@#####888#888888#88</tspan><tspan fill="#79c0ff">$%&amp;W</tspan><tspan fill="#58a6ff">M0Q00QPP</tspan><tspan fill="#8b949e">+=::==+</tspan><tspan fill="#58a6ff">PQ0MM</tspan><tspan fill="#79c0ff">W&amp;WW</tspan><tspan fill="#58a6ff">MMMMMMM</tspan><tspan fill="#79c0ff">%</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#484f58">.......................</tspan></text>
+    <text x="10" y="360.0" clip-path="url(#clip-row-57)"><tspan fill="#484f58">............................</tspan><tspan fill="#58a6ff">P</tspan><tspan fill="#ffffff">#@@@########8888888888</tspan><tspan fill="#79c0ff">$%&amp;&amp;W</tspan><tspan fill="#58a6ff">MMM0QP</tspan><tspan fill="#8b949e">++</tspan><tspan fill="#58a6ff">PQ0000MMM</tspan><tspan fill="#79c0ff">WWWWWWWWWW&amp;</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#484f58">........................</tspan></text>
+    <text x="10" y="366.0" clip-path="url(#clip-row-58)"><tspan fill="#484f58">.............................</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#ffffff">#@@@#######88888888888</tspan><tspan fill="#79c0ff">$$$$%%%%&amp;&amp;WWW</tspan><tspan fill="#58a6ff">MMMMMMM</tspan><tspan fill="#79c0ff">WWWW&amp;&amp;&amp;WWW%$</tspan><tspan fill="#58a6ff">M</tspan><tspan fill="#484f58">.........................</tspan></text>
+    <text x="10" y="372.0" clip-path="url(#clip-row-59)"><tspan fill="#484f58">.............................</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@@@######888###########8888</tspan><tspan fill="#79c0ff">$</tspan><tspan fill="#ffffff">8</tspan><tspan fill="#79c0ff">$%&amp;&amp;W</tspan><tspan fill="#58a6ff">MMMM</tspan><tspan fill="#79c0ff">WWWWWW&amp;&amp;&amp;&amp;&amp;W&amp;W</tspan><tspan fill="#58a6ff">Q</tspan><tspan fill="#484f58">..........................</tspan></text>
+    <text x="10" y="378.0" clip-path="url(#clip-row-60)"><tspan fill="#484f58">..............................</tspan><tspan fill="#8b949e">+</tspan><tspan fill="#79c0ff">&amp;</tspan><tspan fill="#ffffff">@@@@@@##888##8888####8888888</tspan><tspan fill="#79c0ff">$$%&amp;W</tspan><tspan fill="#58a6ff">MMMMMMMM</tspan><tspan fill="#79c0ff">WW&amp;&amp;&amp;&amp;&amp;&amp;</tspan><tspan fill="#58a6ff">0</tspan><tspan fill="#484f58">-...........................</tspan></text>
+  </g>
+</svg>
