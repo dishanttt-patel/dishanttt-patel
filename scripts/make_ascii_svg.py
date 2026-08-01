@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 """
 ===============================================================================
-  HIGH-FIDELITY EDGE-ENHANCED ASCII PORTRAIT GENERATOR (PRODUCTION ENGINE)
+  HIGH-FIDELITY ASCII PORTRAIT GENERATOR — COMPLETE REWRITE
 ===============================================================================
-Description:
-    Transforms prepped photos (assets/source-prepped.png) into photorealistic
-    animated ASCII SVG vector cards for GitHub profile READMEs.
 
-Key Features:
-    1. Ingests Edge-Enhanced Prepped Photo
-    2. 70-Level High-Density Character Ramp Mapping
-    3. Multi-Tone GitHub Dark Theme Color Palette
-    4. Monospaced SMIL Left-to-Right Animated SVG Vector Card
+Converts a preprocessed grayscale portrait into a centered, animated ASCII
+SVG suitable for GitHub profile READMEs.
+
+Design philosophy:
+  - The CHARACTER RAMP does the heavy lifting. A 70-char ramp gives us 70
+    distinct density levels — far more than enough for photorealistic output.
+  - We do NOT over-process the image. The prepped photo already has good
+    contrast. We just resize and map faithfully.
+  - The INVERSION matters: in the source photo, dark pixels = hair/glasses.
+    On a dark SVG background, we want those features BRIGHT. So dark source
+    pixels → dense characters → bright colors. This is naturally handled by
+    mapping low pixel values to the front of the ramp (dense chars).
 
 Usage:
-    python scripts/make_ascii_svg.py --input assets/source-prepped.png --output avi-ascii.svg --width 130
+  python scripts/make_ascii_svg.py -i assets/source-prepped.png -o avi-ascii.svg -w 120
 ===============================================================================
 """
 
@@ -26,180 +30,221 @@ import cv2
 import numpy as np
 from PIL import Image
 
-# High-density 70-level character ramp from dark/dense to light/sparse
-DENSITY_RAMP = list(
+
+# ---------------------------------------------------------------------------
+# CHARACTER DENSITY RAMP (70 levels, dense → sparse)
+# ---------------------------------------------------------------------------
+# Characters sorted by approximate visual density when rendered in a
+# monospace font. Index 0 is the densest (darkest source pixel → brightest
+# on dark background), last index is space (brightest source pixel → empty).
+RAMP = list(
     "$@B%8&WM#*oahkbdpqwm"
-    "ZO0QLCJUYXzcvuxrjft/\\|()1{}[]?-_+~<>i!"
-    "lI;:,\"^`'. "
+    "ZO0QLCJUYXzcvuxrjft/"
+    "\\|()1{}[]?-_+~<>i!lI"
+    ";:,\"^`'. "
 )
-NUM_DENSITY_LEVELS = len(DENSITY_RAMP) - 1
+NUM_LEVELS = len(RAMP) - 1  # 69
 
 
-def load_prepped_image(image_path: str, bg_thresh: int = 242) -> tuple:
-    """Loads prepped image and extracts foreground subject mask."""
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(f"Input file '{image_path}' not found.")
-
-    img_bgr = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
-    if img_bgr is None:
-        pil_img = Image.open(image_path)
-        img_bgr = np.array(pil_img)
-
-    if len(img_bgr.shape) == 3 and img_bgr.shape[2] == 4:
-        alpha = img_bgr[:, :, 3]
-        gray = cv2.cvtColor(img_bgr[:, :, :3], cv2.COLOR_BGR2GRAY)
-        fg_mask = alpha > 30
-    elif len(img_bgr.shape) == 3:
-        gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
-        fg_mask = gray < bg_thresh
+# ---------------------------------------------------------------------------
+# GITHUB DARK THEME PALETTE
+# ---------------------------------------------------------------------------
+def pixel_to_color(px: float) -> str:
+    """
+    Map source pixel luminance to a GitHub-dark-friendly color.
+    Lower pixel value = darker in source = brighter/more prominent character.
+    """
+    if px < 50:
+        return "#e6edf3"   # near-white: hair, glasses frames, pupils, shirt
+    elif px < 100:
+        return "#79c0ff"   # cyan: facial contours, beard, mustache
+    elif px < 150:
+        return "#58a6ff"   # blue: mid-tone skin, shadows
+    elif px < 200:
+        return "#8b949e"   # gray: light skin, teeth, eye whites
     else:
-        gray = img_bgr.copy()
-        fg_mask = gray < bg_thresh
-
-    return gray, fg_mask
+        return "#484f58"   # dim gray: faint details near background
 
 
-def resize_subject(img: np.ndarray, mask: np.ndarray, width: int = 130) -> tuple:
-    """Resizes image using Lanczos interpolation with monospaced aspect ratio adjustment (~1 : 0.52)."""
-    h_orig, w_orig = img.shape[:2]
-    aspect_ratio = h_orig / float(w_orig)
-    height = int(width * aspect_ratio * 0.52)
+# ---------------------------------------------------------------------------
+# CORE PIPELINE
+# ---------------------------------------------------------------------------
+def load_and_prepare(image_path: str, width: int) -> tuple:
+    """
+    Load the prepped grayscale image, build a foreground mask, and resize
+    to the target column width with correct monospace aspect ratio.
 
-    pil_img = Image.fromarray(img)
-    pil_resized = pil_img.resize((width, height), Image.Resampling.LANCZOS)
-    img_resized = np.array(pil_resized)
+    Returns: (resized_gray, resized_mask, grid_width, grid_height)
+    """
+    img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+    if img is None:
+        img = np.array(Image.open(image_path))
 
-    pil_mask = Image.fromarray(mask.astype(np.uint8) * 255)
-    pil_mask_resized = pil_mask.resize((width, height), Image.Resampling.NEAREST)
-    mask_resized = np.array(pil_mask_resized) > 128
+    # Extract grayscale + foreground mask
+    if len(img.shape) == 3 and img.shape[2] == 4:
+        gray = cv2.cvtColor(img[:, :, :3], cv2.COLOR_BGR2GRAY)
+        fg_mask = img[:, :, 3] > 20
+    elif len(img.shape) == 3:
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        fg_mask = gray < 240
+    else:
+        gray = img
+        fg_mask = gray < 240
 
-    return img_resized, mask_resized, width, height
+    # Resize with correct monospace aspect ratio
+    # Monospace chars are ~2:1 height:width, so we scale height by 0.5
+    h_orig, w_orig = gray.shape
+    aspect = h_orig / w_orig
+    height = int(width * aspect * 0.5)
+
+    resized = np.array(
+        Image.fromarray(gray).resize((width, height), Image.Resampling.LANCZOS)
+    )
+    mask_resized = np.array(
+        Image.fromarray((fg_mask * 255).astype(np.uint8)).resize(
+            (width, height), Image.Resampling.NEAREST
+        )
+    ) > 128
+
+    return resized, mask_resized, width, height
 
 
-def get_github_dark_color(px: float) -> str:
-    """Maps pixel luminance to multi-tone GitHub Dark theme color palette."""
-    if px < 40:
-        return "#ffffff"  # Bright white for glasses, pupils, dark hair & shirt
-    elif px < 80:
-        return "#79c0ff"  # Bright cyan for mustache, beard & facial contours
-    elif px < 130:
-        return "#58a6ff"  # Primary blue for mid-tone skin shading
-    elif px < 180:
-        return "#8ab4f8"  # Ice blue for light skin tones
-    return "#8b949e"     # Slate gray for highlights & teeth
+def image_to_ascii(gray: np.ndarray, mask: np.ndarray) -> tuple:
+    """
+    Convert a resized grayscale image into a 2D grid of (character, color) tuples.
 
+    The mapping is simple and faithful:
+      pixel_value / 255 * NUM_LEVELS → index into RAMP
 
-def render_ascii_portrait(image_path: str, output_path: str, width: int = 130):
-    """Generates ASCII portrait from edge-enhanced prepped photo."""
-    print(f"[1/3] Loading prepped photo from '{image_path}'...")
-    gray, fg_mask = load_prepped_image(image_path)
-
-    print(f"[2/3] Resizing to {width} columns via Lanczos interpolation...")
-    img_resized, mask_resized, grid_w, grid_h = resize_subject(gray, fg_mask, width=width)
-
-    print("[3/3] Mapping pixels to 70-level high-density ASCII ramp...")
-    ascii_grid = []
+    Background pixels (mask=False) become spaces.
+    """
+    h, w = gray.shape
+    char_grid = []
     color_grid = []
 
-    for y in range(grid_h):
-        ascii_row = []
+    for y in range(h):
+        char_row = []
         color_row = []
-        for x in range(grid_w):
-            px_val = img_resized[y, x]
-            is_fg = mask_resized[y, x]
-
-            if not is_fg or px_val >= 242:
-                ascii_row.append(" ")
-                color_row.append("#30363d")
+        for x in range(w):
+            if not mask[y, x] or gray[y, x] >= 245:
+                char_row.append(" ")
+                color_row.append("#0d1117")  # matches background
             else:
-                idx = min(int((px_val / 241.0) * NUM_DENSITY_LEVELS), NUM_DENSITY_LEVELS)
-                ascii_row.append(DENSITY_RAMP[idx])
-                color_row.append(get_github_dark_color(px_val))
-
-        ascii_grid.append(ascii_row)
+                px = gray[y, x]
+                idx = int(round((px / 255.0) * NUM_LEVELS))
+                idx = max(0, min(NUM_LEVELS, idx))
+                char_row.append(RAMP[idx])
+                color_row.append(pixel_to_color(px))
+        char_grid.append(char_row)
         color_grid.append(color_row)
 
-    generate_animated_svg(ascii_grid, color_grid, output_path, font_size=4.0, line_height=5.2)
+    return char_grid, color_grid
 
 
-def generate_animated_svg(ascii_grid: list, color_grid: list, output_path: str,
-                           font_size: float = 4.0, line_height: float = 5.2):
-    """Renders monospaced SVG card with SMIL left-to-right reveal animation."""
-    num_rows = len(ascii_grid)
-    svg_width = 370  # Standard GitHub README card width
-    svg_height = max(500, int(num_rows * line_height) + 24)
-    start_y = 18
-    duration_per_line = 0.025
+# ---------------------------------------------------------------------------
+# SVG RENDERER
+# ---------------------------------------------------------------------------
+def render_svg(char_grid: list, color_grid: list, output_path: str,
+               font_size: float = 3.6, line_height: float = 4.8):
+    """
+    Render the ASCII grid as an animated SVG with:
+      - GitHub-dark background (#0d1117)
+      - Monospace font stack
+      - Row-by-row left-to-right SMIL reveal animation
+      - Grouped <tspan> elements for same-color runs (file size optimization)
+    """
+    num_rows = len(char_grid)
+    svg_w = 370
+    svg_h = max(400, int(num_rows * line_height) + 30)
+    y_start = 16
 
-    svg_lines = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {svg_width} {svg_height}" width="{svg_width}" height="{svg_height}">',
-        '  <style>',
-        '    .bg { fill: #0d1117; rx: 8px; stroke: #30363d; stroke-width: 1px; }',
-        f'    .ascii-text {{ font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Courier New", monospace; font-size: {font_size}px; white-space: pre; font-weight: 700; }}',
-        '  </style>',
-        f'  <rect width="{svg_width}" height="{svg_height}" class="bg" />',
-        '  <defs>'
-    ]
+    lines = []
+    lines.append(f'<svg xmlns="http://www.w3.org/2000/svg" '
+                 f'viewBox="0 0 {svg_w} {svg_h}" '
+                 f'width="{svg_w}" height="{svg_h}">')
 
+    # Styles
+    lines.append('  <style>')
+    lines.append('    .bg { fill: #0d1117; rx: 6; stroke: #30363d; stroke-width: 0.5; }')
+    lines.append(f'    text {{ font-family: ui-monospace, SFMono-Regular, '
+                 f'"SF Mono", Consolas, "Courier New", monospace; '
+                 f'font-size: {font_size}px; white-space: pre; font-weight: 600; }}')
+    lines.append('  </style>')
+    lines.append(f'  <rect width="{svg_w}" height="{svg_h}" class="bg"/>')
+
+    # Clip-path definitions for row animation
+    lines.append('  <defs>')
     for i in range(num_rows):
-        clip_id = f"clip-row-{i}"
-        row_y = start_y + (i * line_height) - font_size
-        row_h = line_height + 2
-        delay = round(i * duration_per_line, 3)
-        anim_dur = round(duration_per_line * 1.5, 3)
+        cy = y_start + i * line_height - font_size
+        delay = round(i * 0.02, 3)
+        lines.append(f'    <clipPath id="r{i}">')
+        lines.append(f'      <rect x="6" y="{cy:.1f}" width="0" height="{line_height + 2:.1f}">')
+        lines.append(f'        <animate attributeName="width" from="0" to="{svg_w - 12}" '
+                     f'begin="{delay}s" dur="0.04s" fill="freeze"/>')
+        lines.append(f'      </rect>')
+        lines.append(f'    </clipPath>')
+    lines.append('  </defs>')
 
-        svg_lines.append(f'    <clipPath id="{clip_id}">')
-        svg_lines.append(f'      <rect x="8" y="{row_y:.1f}" width="0" height="{svg_width - 16}">')
-        svg_lines.append(f'        <animate attributeName="width" from="0" to="{svg_width - 16}" begin="{delay}s" dur="{anim_dur}s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />')
-        svg_lines.append('      </rect>')
-        svg_lines.append('    </clipPath>')
-
-    svg_lines.append('  </defs>')
-    svg_lines.append('  <g class="ascii-text">')
-
+    # Text rows
+    lines.append('  <g>')
     for i in range(num_rows):
-        clip_id = f"clip-row-{i}"
-        y_pos = start_y + (i * line_height)
-        row_chars = ascii_grid[i]
+        y_pos = y_start + i * line_height
+        row_chars = char_grid[i]
         row_colors = color_grid[i]
 
+        # Group consecutive same-color characters into <tspan> runs
         spans = []
-        curr_color, curr_text = None, ""
-
-        for char, color in zip(row_chars, row_colors):
-            escaped_char = html.escape(char)
-            if color == curr_color:
-                curr_text += escaped_char
+        cur_color = None
+        cur_text = ""
+        for ch, col in zip(row_chars, row_colors):
+            esc = html.escape(ch)
+            if col == cur_color:
+                cur_text += esc
             else:
-                if curr_text:
-                    spans.append(f'<tspan fill="{curr_color}">{curr_text}</tspan>')
-                curr_color = color
-                curr_text = escaped_char
-        if curr_text:
-            spans.append(f'<tspan fill="{curr_color}">{curr_text}</tspan>')
+                if cur_text:
+                    spans.append(f'<tspan fill="{cur_color}">{cur_text}</tspan>')
+                cur_color = col
+                cur_text = esc
+        if cur_text:
+            spans.append(f'<tspan fill="{cur_color}">{cur_text}</tspan>')
 
-        row_content = "".join(spans)
-        svg_lines.append(f'    <text x="10" y="{y_pos:.1f}" clip-path="url(#{clip_id})">{row_content}</text>')
+        lines.append(f'    <text x="8" y="{y_pos:.1f}" clip-path="url(#r{i})">'
+                     f'{"".join(spans)}</text>')
 
-    svg_lines.append('  </g>')
-    svg_lines.append('</svg>')
+    lines.append('  </g>')
+    lines.append('</svg>')
 
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(svg_lines))
+        f.write("\n".join(lines))
 
-    print(f"Successfully generated High-Fidelity ASCII SVG: '{output_path}' ({svg_width}x{svg_height}px)")
+    print(f"Generated: '{output_path}' ({svg_w}×{svg_h}px, {num_rows} rows)")
 
 
+# ---------------------------------------------------------------------------
+# MAIN
+# ---------------------------------------------------------------------------
 def main():
-    parser = argparse.ArgumentParser(description="High-Fidelity ASCII Portrait Generator")
-    parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
-    parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG card")
-    parser.add_argument("--width", "-w", type=int, default=130, help="Character grid width (default: 130)")
-
+    parser = argparse.ArgumentParser(
+        description="High-fidelity ASCII portrait → animated SVG")
+    parser.add_argument("-i", "--input", default="assets/source-prepped.png")
+    parser.add_argument("-o", "--output", default="avi-ascii.svg")
+    parser.add_argument("-w", "--width", type=int, default=120,
+                        help="Grid width in characters (default: 120)")
     args = parser.parse_args()
 
-    render_ascii_portrait(args.input, args.output, width=args.width)
+    if not os.path.exists(args.input):
+        print(f"Error: '{args.input}' not found.")
+        sys.exit(1)
+
+    print(f"[1/3] Loading & resizing '{args.input}' to {args.width} columns...")
+    gray, mask, gw, gh = load_and_prepare(args.input, args.width)
+
+    print(f"[2/3] Converting {gw}×{gh} grid to ASCII ({NUM_LEVELS + 1} density levels)...")
+    chars, colors = image_to_ascii(gray, mask)
+
+    print(f"[3/3] Rendering animated SVG...")
+    render_svg(chars, colors, args.output)
 
 
 if __name__ == "__main__":
