@@ -1,164 +1,200 @@
 #!/usr/bin/env python3
 """
 make_ascii_svg.py
-Converts prepped photo into a crisp ASCII portrait SVG:
-Renders black/dark feature pixels of prepped photo using ASCII density characters (@, %, *, +, =, -, :, .)
-while keeping all white background pixels as '#'.
+
+High-quality ASCII portrait SVG generator (User Script with Floyd-Steinberg Dithering).
+
+Features
+--------
+- Auto contrast
+- Histogram equalization
+- Unsharp masking
+- Gamma correction
+- High-quality resize
+- Floyd-Steinberg dithering
+- 70-level ASCII ramp
+- Animated SVG (row-by-row reveal)
 """
 
-import os
-import sys
 import argparse
 import html
+import os
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
 
-# ASCII character ramp for dark feature pixels (darkest to lightest feature)
-FEATURE_RAMP = ["@", "%", "*", "+", "=", "-", ":", "."]
-
-
-def get_char_color(char: str) -> str:
-    """Returns vibrant multi-tone colors matching character density."""
-    if char in ["@", "%"]:
-        return "#79c0ff"  # Bright cyan highlight
-    elif char in ["*", "+"]:
-        return "#58a6ff"  # Primary blue
-    elif char in ["=", "-"]:
-        return "#a5d6ff"  # Ice blue
-    elif char in [":", "."]:
-        return "#8b949e"  # Slate gray
-    elif char == "#":
-        return "#30363d"  # Background '#' grid color
-    return "#30363d"
+ASCII_RAMP = (
+    "$@B%8&WM#*oahkbdpqwm"
+    "ZO0QLCJUYXzcvuxrjft/\\|()1{}[]?-_+~<>i!"
+    "lI;:,\"^`'. "
+)
 
 
-def image_to_ascii(image_path: str, width: int = 85) -> list:
-    """Renders dark pixels as characters and white pixels as '#'."""
-    if not os.path.exists(image_path):
-        print(f"Warning: Image '{image_path}' not found. Generating sample avatar pattern.")
-        return generate_sample_ascii(width, int(width * 0.52))
-
-    img = Image.open(image_path).convert("L")
-
-    # Monospace aspect ratio correction (~1 : 0.52 ratio)
-    aspect_ratio = img.height / img.width
-    height = int(width * aspect_ratio * 0.52)
-
-    img_resized = img.resize((width, height), Image.Resampling.LANCZOS)
-    np_img = np.array(img_resized)
-
-    lines = []
-    num_ramp = len(FEATURE_RAMP)
-
-    for y in range(height):
-        row = []
-        for x in range(width):
-            px = np_img[y, x]
-            # White background pixels in prepped photo (>= 180) -> '#'
-            if px >= 180:
-                char = "#"
-            else:
-                # Black/dark feature pixels (< 180) -> ASCII density characters
-                idx = min(int((px / 180.0) * num_ramp), num_ramp - 1)
-                char = FEATURE_RAMP[idx]
-            row.append(char)
-        lines.append(row)
-    return lines
+def get_char_color(v):
+    if v < 40:
+        return "#79c0ff"
+    elif v < 80:
+        return "#58a6ff"
+    elif v < 130:
+        return "#8ab4f8"
+    elif v < 180:
+        return "#8b949e"
+    return "#484f58"
 
 
-def generate_sample_ascii(width: int = 85, height: int = 44) -> list:
-    lines = []
-    for y in range(height):
-        row = []
-        for x in range(width):
-            row.append("#")
-        lines.append(row)
-    return lines
+def preprocess(img):
+    img = ImageOps.autocontrast(img)
+    img = ImageOps.equalize(img)
+    img = img.filter(
+        ImageFilter.UnsharpMask(radius=2, percent=220, threshold=2)
+    )
+    gamma = 0.85
+    lut = [pow(i / 255.0, gamma) * 255 for i in range(256)]
+    return img.point(lut)
 
 
-def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line_height: float = 7.0,
-                     duration_per_line: float = 0.04):
-    """Renders ASCII lines into a multi-toned animated SMIL SVG file."""
-    num_rows = len(lines)
-    max_cols = max(len(line) for line in lines) if lines else 85
+def floyd(arr):
+    h, w = arr.shape
+    levels = len(ASCII_RAMP) - 1
 
-    svg_width = 370  # Fixed width to fit top row layout
-    svg_height = max(500, int(num_rows * line_height) + 24)
+    for y in range(h - 1):
+        for x in range(w - 1):
+            old = arr[y, x]
+            new = round(old / 255 * levels) * (255 / levels)
+            err = old - new
+            arr[y, x] = new
+            arr[y, x + 1] += err * 7 / 16
+            if x > 0:
+                arr[y + 1, x - 1] += err * 3 / 16
+            arr[y + 1, x] += err * 5 / 16
+            arr[y + 1, x + 1] += err * 1 / 16
+    return np.clip(arr, 0, 255)
 
-    start_y = 18
 
-    svg_lines = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {svg_width} {svg_height}" width="{svg_width}" height="{svg_height}">',
-        '  <style>',
-        '    .bg { fill: #0d1117; rx: 8px; stroke: #30363d; stroke-width: 1px; }',
-        f'    .ascii-text {{ font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Courier New", monospace; font-size: {font_size}px; white-space: pre; font-weight: 700; }}',
-        '  </style>',
-        f'  <rect width="{svg_width}" height="{svg_height}" class="bg" />',
-        '  <defs>'
-    ]
+def image_to_ascii(path, width):
+    img = Image.open(path).convert("L")
+    img = preprocess(img)
 
-    # Clip paths for row-by-row horizontal wipe animation
-    for i in range(num_rows):
-        clip_id = f"clip-row-{i}"
-        row_y = start_y + (i * line_height) - font_size
-        row_h = line_height + 2
-        delay = round(i * duration_per_line, 3)
-        anim_dur = round(duration_per_line * 1.5, 3)
+    aspect = img.height / img.width
+    height = int(width * aspect * 0.52)
 
-        svg_lines.append(f'    <clipPath id="{clip_id}">')
-        svg_lines.append(f'      <rect x="8" y="{row_y:.1f}" width="0" height="{row_h:.1f}">')
-        svg_lines.append(f'        <animate attributeName="width" from="0" to="{svg_width - 16}" begin="{delay}s" dur="{anim_dur}s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" />')
-        svg_lines.append('      </rect>')
-        svg_lines.append('    </clipPath>')
+    img = img.resize((width, height), Image.Resampling.LANCZOS)
 
-    svg_lines.append('  </defs>')
-    svg_lines.append('  <g class="ascii-text">')
+    px = np.array(img, dtype=np.float32)
+    px = floyd(px)
 
-    # Render each row with multi-colored character spans
-    for i, line_chars in enumerate(lines):
-        clip_id = f"clip-row-{i}"
-        y_pos = start_y + (i * line_height)
+    chars = []
+    vals = []
+
+    for row in px:
+        crow = []
+        vrow = []
+        for p in row:
+            idx = int((p / 255) * (len(ASCII_RAMP) - 1))
+            crow.append(ASCII_RAMP[idx])
+            vrow.append(int(p))
+        chars.append(crow)
+        vals.append(vrow)
+
+    return chars, vals
+
+
+def render_svg(chars, vals, output,
+               font_size=5.2,
+               line_height=6.7,
+               duration=0.035):
+
+    rows = len(chars)
+    cols = len(chars[0])
+
+    width = cols * 4.35 + 20
+    height = rows * line_height + 25
+
+    y0 = 18
+
+    out = []
+
+    out.append(
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'viewBox="0 0 {width:.0f} {height:.0f}" width="{width:.0f}" height="{height:.0f}">'
+    )
+
+    out.append("<style>")
+    out.append(".bg{fill:#0d1117;rx:8px;stroke:#30363d;stroke-width:1px;}")
+    out.append(
+        f'.ascii{{font-family:Consolas,"Courier New",monospace;'
+        f'font-size:{font_size}px;font-weight:700;white-space:pre;}}'
+    )
+    out.append("</style>")
+
+    out.append(f'<rect class="bg" width="{width:.0f}" height="{height:.0f}"/>')
+
+    out.append("<defs>")
+
+    for r in range(rows):
+        delay = r * duration
+        out.append(f'<clipPath id="c{r}">')
+        out.append(
+            f'<rect x="0" y="{y0+r*line_height-font_size}" width="0" '
+            f'height="{line_height+2}">'
+        )
+        out.append(
+            f'<animate attributeName="width" from="0" '
+            f'to="{width}" begin="{delay:.3f}s" '
+            f'dur="{duration*1.5:.3f}s" fill="freeze"/>'
+        )
+        out.append("</rect></clipPath>")
+
+    out.append("</defs>")
+    out.append('<g class="ascii">')
+
+    for r in range(rows):
 
         spans = []
-        curr_color = None
-        curr_text = ""
+        current = None
+        text = ""
 
-        for char in line_chars:
-            color = get_char_color(char)
-            escaped_char = html.escape(char)
-            if color == curr_color:
-                curr_text += escaped_char
+        for c in range(cols):
+
+            color = get_char_color(vals[r][c])
+            ch = html.escape(chars[r][c])
+
+            if color == current:
+                text += ch
             else:
-                if curr_text:
-                    spans.append(f'<tspan fill="{curr_color}">{curr_text}</tspan>')
-                curr_color = color
-                curr_text = escaped_char
-        if curr_text:
-            spans.append(f'<tspan fill="{curr_color}">{curr_text}</tspan>')
+                if text:
+                    spans.append(
+                        f'<tspan fill="{current}">{text}</tspan>'
+                    )
+                current = color
+                text = ch
 
-        row_content = "".join(spans)
-        svg_lines.append(f'    <text x="10" y="{y_pos:.1f}" clip-path="url(#{clip_id})">{row_content}</text>')
+        if text:
+            spans.append(f'<tspan fill="{current}">{text}</tspan>')
 
-    svg_lines.append('  </g>')
-    svg_lines.append('</svg>')
+        out.append(
+            f'<text x="10" y="{y0+r*line_height}" '
+            f'clip-path="url(#c{r})">{"".join(spans)}</text>'
+        )
 
-    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(svg_lines))
+    out.append("</g></svg>")
 
-    print(f"Successfully generated ASCII SVG (dark feature chars + '#' background) at '{output_path}' ({svg_width}x{svg_height}px).")
+    os.makedirs(os.path.dirname(output) or ".", exist_ok=True)
+    with open(output, "w", encoding="utf8") as f:
+        f.write("\n".join(out))
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert prepped photo to animated ASCII SVG with '#' background")
-    parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
-    parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG")
-    parser.add_argument("--width", "-w", type=int, default=85, help="Character grid width (~80-90)")
+    p = argparse.ArgumentParser(description="High-quality ASCII portrait SVG generator")
+    p.add_argument("-i", "--input", default="assets/source-prepped.png", help="Path to input image")
+    p.add_argument("-o", "--output", default="avi-ascii.svg", help="Output SVG path")
+    p.add_argument("-w", "--width", type=int, default=80, help="Grid width")
 
-    args = parser.parse_args()
+    args = p.parse_args()
 
-    lines = image_to_ascii(args.input, width=args.width)
-    render_ascii_svg(lines, args.output)
+    chars, vals = image_to_ascii(args.input, args.width)
+    render_svg(chars, vals, args.output)
+
+    print("Saved:", args.output)
 
 
 if __name__ == "__main__":
