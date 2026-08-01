@@ -3,35 +3,37 @@
 tune_ascii.py
 Generates 3 distinct high-quality ASCII portrait variants from source-prepped.png:
 1. Sharp Outlines (avi-ascii-sharp.svg)
-2. Soft Photorealistic Shading (avi-ascii-soft.svg)
-3. High-Definition 120-col Grid (avi-ascii-hd.svg)
+2. Soft Photorealistic Shading (avi-ascii-soft.svg) - Upgraded with High-Detail Soft Ramp
+3. High-Definition Grid (avi-ascii-hd.svg)
 """
 
 import os
 import sys
 import html
+import cv2
 import numpy as np
 from PIL import Image, ImageEnhance, ImageOps
 
 # SVG styling helper
-def render_svg(lines: list, output_path: str, font_size: float = 5.5, line_height: float = 7.0):
+def render_svg(lines: list, output_path: str, font_size: float = 4.6, line_height: float = 6.0):
     num_rows = len(lines)
-    max_cols = max(len(line) for line in lines) if lines else 95
     svg_width = 370
     svg_height = max(500, int(num_rows * line_height) + 24)
     start_y = 18
 
     def get_color(char):
-        if char in ["@", "#", "█", "▓"]:
-            return "#ffffff"
-        elif char in ["$", "%", "▒", "░"]:
-            return "#a5d6ff"
-        elif char in ["*", "+"]:
-            return "#79c0ff"
-        elif char in ["=", ":"]:
-            return "#58a6ff"
-        elif char in ["-", "."]:
-            return "#484f58"
+        if char in ["@", "#", "$", "B", "%", "8", "&", "W", "M"]:
+            return "#ffffff"  # Bright white for dark features / frames
+        elif char in ["*", "o", "a", "h", "k", "b", "d", "p", "q", "w", "m"]:
+            return "#79c0ff"  # Bright cyan
+        elif char in ["Z", "O", "0", "Q", "L", "C", "J", "U", "Y", "X", "z", "c"]:
+            return "#58a6ff"  # Primary blue
+        elif char in ["v", "u", "x", "r", "j", "f", "t", "/", "\\", "|", "(", ")", "1"]:
+            return "#a5d6ff"  # Soft ice blue
+        elif char in ["{", "}", "[", "]", "?", "-", "_", "+", "~", "<", ">", "i", "!", "l", "I"]:
+            return "#8b949e"  # Slate gray skin tone
+        elif char in [";", ":", ",", "\"", "^", "`", ".", "'"]:
+            return "#484f58"  # Dim gray
         return "#30363d"
 
     svg_lines = [
@@ -48,8 +50,8 @@ def render_svg(lines: list, output_path: str, font_size: float = 5.5, line_heigh
         clip_id = f"clip-row-{i}"
         row_y = start_y + (i * line_height) - font_size
         row_h = line_height + 2
-        delay = round(i * 0.035, 3)
-        anim_dur = round(0.035 * 1.5, 3)
+        delay = round(i * 0.03, 3)
+        anim_dur = round(0.03 * 1.5, 3)
 
         svg_lines.append(f'    <clipPath id="{clip_id}">')
         svg_lines.append(f'      <rect x="8" y="{row_y:.1f}" width="0" height="{row_h:.1f}">')
@@ -109,20 +111,29 @@ def make_sharp_variant(img_path: str, output_path: str):
 
 
 def make_soft_variant(img_path: str, output_path: str):
-    """Soft Photorealistic Variant: Uses 15-level smooth shading ramp."""
-    img = Image.open(img_path).convert("L")
-    img = ImageOps.equalize(img)
+    """Soft Photorealistic Variant (High Detail): Uses bilateral filtering + 60-level smooth density ramp."""
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        pil_img = Image.open(img_path).convert("L")
+        img = np.array(pil_img)
 
-    w = 95
-    h = int(w * (img.height / img.width) * 0.52)
-    resized = img.resize((w, h), Image.Resampling.LANCZOS)
+    # Soft bilateral filtering to smooth skin while keeping glasses/eyes/mustache sharp
+    filt = cv2.bilateralFilter(img, d=9, sigmaColor=75, sigmaSpace=75)
+
+    w = 115  # Upgraded resolution for detailed soft rendering
+    pil_img = Image.fromarray(filt)
+    h = int(w * (pil_img.height / pil_img.width) * 0.52)
+    resized = pil_img.resize((w, h), Image.Resampling.LANCZOS)
     arr = np.array(resized)
 
-    ramp = [" ", ".", "`", "'", "-", ":", ";", "=", "+", "*", "%", "&", "$", "#", "@"]
+    # High-detail 60-level soft density ramp
+    ramp = list(" $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvuxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
+    num_ramp = len(ramp) - 1
+
     lines = []
     for row in arr:
-        lines.append([" " if px >= 245 else ramp[min(int((px / 244.0) * 14), 14)] for px in row])
-    render_svg(lines, output_path, font_size=5.5, line_height=7.0)
+        lines.append([" " if px >= 245 else ramp[min(int((px / 244.0) * num_ramp), num_ramp)] for px in row])
+    render_svg(lines, output_path, font_size=4.6, line_height=6.0)
 
 
 def make_hd_variant(img_path: str, output_path: str):
@@ -152,8 +163,8 @@ def main():
     make_soft_variant(img_path, "avi-ascii-soft.svg")
     make_hd_variant(img_path, "avi-ascii-hd.svg")
 
-    # Set default avi-ascii.svg to HD variant
-    make_hd_variant(img_path, "avi-ascii.svg")
+    # Set default avi-ascii.svg to the detailed soft variant
+    make_soft_variant(img_path, "avi-ascii.svg")
 
 
 if __name__ == "__main__":
