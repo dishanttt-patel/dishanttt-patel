@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
 make_ascii_svg.py
-Converts a prepped photo into a crisp, highly recognizable line-art ASCII portrait SVG.
-Uses edge detection + adaptive thresholding to render facial features (eyes, glasses, lips, hair)
-clearly without solid block blobs.
+Converts prepped photo into a crisp, highly recognizable animated ASCII portrait SVG.
+Uses luminance density mapping with multi-tone cyan/blue terminal styling.
 """
 
 import os
@@ -12,94 +11,67 @@ import argparse
 import html
 import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageEnhance, ImageOps
+
+# Density ramp from dark/dense (@, #) to light/sparse (., space)
+ASCII_RAMP = ["@", "#", "$", "%", "*", "+", "=", ":", "-", ".", " "]
 
 
 def get_char_color(char: str) -> str:
-    """Returns vibrant multi-tone colors matching character intensity."""
-    if char in ["@", "#", "W", "M", "8"]:
+    """Returns vibrant multi-tone colors matching character density."""
+    if char in ["@", "#"]:
         return "#79c0ff"  # Bright cyan highlight
-    elif char in ["%", "&", "S", "*"]:
+    elif char in ["$", "%"]:
         return "#58a6ff"  # Primary blue
-    elif char in ["+", "=", "o"]:
+    elif char in ["*", "+"]:
         return "#a5d6ff"  # Ice blue
-    elif char in [":", ";"]:
+    elif char in ["=", ":"]:
         return "#8b949e"  # Slate gray
     elif char in ["-", "."]:
         return "#484f58"  # Dim gray
     return "#30363d"
 
 
-def image_to_ascii(image_path: str, width: int = 105, invert: bool = False) -> list:
-    """Converts image to clean line-art ASCII portrait using edge-aware adaptive filtering."""
+def image_to_ascii(image_path: str, width: int = 90) -> list:
+    """Converts prepped head & shoulders photo to clean ASCII portrait."""
     if not os.path.exists(image_path):
         print(f"Warning: Image '{image_path}' not found. Generating sample avatar pattern.")
         return generate_sample_ascii(width, int(width * 0.52))
 
-    # Read image using OpenCV
-    cv_img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    if cv_img is None:
-        pil_img = Image.open(image_path).convert("L")
-        cv_img = np.array(pil_img)
+    img = Image.open(image_path).convert("L")
 
-    # 1. Bilateral filter to smooth noise while preserving sharp facial edges
-    filtered = cv2.bilateralFilter(cv_img, d=7, sigmaColor=50, sigmaSpace=50)
+    # Enhance contrast and sharpness for crisp facial detail
+    img = ImageOps.equalize(img)
+    img = ImageEnhance.Contrast(img).enhance(1.4)
+    img = ImageEnhance.Sharpness(img).enhance(1.6)
 
-    # 2. Canny edge detection for facial contours (eyes, glasses, lips, hair outline)
-    edges = cv2.Canny(filtered, 50, 150)
+    # Monospace aspect ratio correction (~1 : 0.52 ratio)
+    aspect_ratio = img.height / img.width
+    height = int(width * aspect_ratio * 0.52)
 
-    # 3. Adaptive thresholding for subtle shading
-    thresh = cv2.adaptiveThreshold(
-        filtered, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY_INV, 11, 2
-    )
+    img_resized = img.resize((width, height), Image.Resampling.LANCZOS)
+    np_img = np.array(img_resized)
 
-    # Combine edges + adaptive shading
-    combined = cv2.addWeighted(edges, 0.6, thresh, 0.4, 0)
-
-    # 4. Aspect ratio scaling for monospace characters (~1 : 0.50 ratio)
-    h_orig, w_orig = cv_img.shape
-    aspect_ratio = h_orig / w_orig
-    height = int(width * aspect_ratio * 0.50)
-
-    resized_combined = cv2.resize(combined, (width, height), interpolation=cv2.INTER_AREA)
-    resized_orig = cv2.resize(cv_img, (width, height), interpolation=cv2.INTER_AREA)
-
-    # Character density ramp from light/edge to dark
-    ramp = [" ", ".", "-", ":", "=", "+", "*", "%", "#", "@", "W"]
+    num_levels = len(ASCII_RAMP)
 
     lines = []
     for y in range(height):
         row = []
         for x in range(width):
-            val_comb = resized_combined[y, x]
-            val_raw = resized_orig[y, x]
-
-            # Background check: if raw pixel is near pure white (> 245), output space
-            if val_raw > 245:
+            val = np_img[y, x]
+            # If background (pure white / near white), output blank space
+            if val >= 245:
                 char = " "
-            elif val_comb > 128:
-                # Strong edge or feature contour
-                edge_intensity = val_comb / 255.0
-                idx = int(edge_intensity * (len(ramp) - 1))
-                char = ramp[min(idx, len(ramp) - 1)]
-            elif val_raw < 100:
-                # Dark feature area (hair / dark shadow)
-                dark_intensity = (100 - val_raw) / 100.0
-                if dark_intensity > 0.6:
-                    char = "#"
-                elif dark_intensity > 0.3:
-                    char = "*"
-                else:
-                    char = ":"
             else:
-                char = " "
+                # Map dark pixels (0) to '@', mid to '*', light to '.'
+                idx = min(int(val / 255.0 * (num_levels - 1)), num_levels - 1)
+                char = ASCII_RAMP[idx]
             row.append(char)
         lines.append(row)
     return lines
 
 
-def generate_sample_ascii(width: int = 100, height: int = 50) -> list:
+def generate_sample_ascii(width: int = 90, height: int = 45) -> list:
     lines = []
     center_x, center_y = width / 2, height / 2
     for y in range(height):
@@ -124,10 +96,10 @@ def generate_sample_ascii(width: int = 100, height: int = 50) -> list:
 
 
 def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line_height: float = 7.0,
-                     char_width: float = 3.2, duration_per_line: float = 0.04):
+                     duration_per_line: float = 0.04):
     """Renders ASCII lines into a multi-toned animated SMIL SVG file."""
     num_rows = len(lines)
-    max_cols = max(len(line) for line in lines) if lines else 100
+    max_cols = max(len(line) for line in lines) if lines else 90
 
     svg_width = 370  # Fixed width to fit top row layout
     svg_height = max(500, int(num_rows * line_height) + 24)
@@ -193,19 +165,18 @@ def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(svg_lines))
 
-    print(f"Successfully generated line-art ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
+    print(f"Successfully generated high-definition ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert prepped photo to line-art animated ASCII SVG")
+    parser = argparse.ArgumentParser(description="Convert prepped photo to high-definition animated ASCII SVG")
     parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG")
-    parser.add_argument("--width", "-w", type=int, default=105, help="Character grid width (~95-110)")
-    parser.add_argument("--invert", action="store_true", help="Invert brightness mapping")
+    parser.add_argument("--width", "-w", type=int, default=90, help="Character grid width (~80-100)")
 
     args = parser.parse_args()
 
-    lines = image_to_ascii(args.input, width=args.width, invert=args.invert)
+    lines = image_to_ascii(args.input, width=args.width)
     render_ascii_svg(lines, args.output)
 
 
