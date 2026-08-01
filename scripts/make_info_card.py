@@ -20,7 +20,7 @@ def generate_info_card_svg(output_path: str, static_mode: bool = False, username
 
     # Info card rows
     info_rows = [
-        ("OS", "macOS Sonoma / Arch Linux x86_64", "#79c0ff"),
+        ("OS", "Windows 11 x86_64", "#79c0ff"),
         ("Host", "GitHub Profile Terminal v2.4", "#79c0ff"),
         ("Role", "Software Engineer & AI Builder", "#a5d6ff"),
         ("Now", "Developing AI tools & web apps", "#7ee787"),

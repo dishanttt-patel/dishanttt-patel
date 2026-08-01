@@ -40,7 +40,7 @@
     <g class="animate-row" style="animation-delay: 0.18s;">
       <text x="0" y="52" class="text-base">
         <tspan fill="#79c0ff" font-weight="700">OS:</tspan>
-        <tspan x="110" class="val">macOS Sonoma / Arch Linux x86_64</tspan>
+        <tspan x="110" class="val">Windows 11 x86_64</tspan>
       </text>
     </g>
     <g class="animate-row" style="animation-delay: 0.26s;">
