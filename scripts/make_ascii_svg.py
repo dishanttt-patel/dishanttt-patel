@@ -2,7 +2,8 @@
 """
 make_ascii_svg.py
 Converts prepped photo into a crisp, 100% accurate animated ASCII portrait SVG.
-Uses the exact blog post tutorial character mapping algorithm for perfect face rendition.
+Maps ONLY the dark feature pixels (<200) from source-prepped.png into ASCII characters,
+while keeping white background pixels (>=200) as blank space so the SVG background (#0d1117) shows through.
 """
 
 import os
@@ -12,25 +13,27 @@ import html
 import numpy as np
 from PIL import Image
 
-# Blog post tutorial ASCII character set
-ASCII_CHARS = [' ', '@', '%', '#', '*', '+', '=', '-', ':', '.', ' ']
+# Density ramp for dark feature pixels (darkest to lightest feature)
+ASCII_RAMP = ["@", "#", "$", "%", "*", "+", "=", ":", "-", "."]
 
 
 def get_char_color(char: str) -> str:
     """Returns vibrant multi-tone colors matching character density."""
-    if char in ["@", "%", "#"]:
+    if char in ["@", "#"]:
         return "#79c0ff"  # Bright cyan highlight
-    elif char in ["*", "+"]:
+    elif char in ["$", "%"]:
         return "#58a6ff"  # Primary blue
-    elif char in ["=", "-"]:
+    elif char in ["*", "+"]:
         return "#a5d6ff"  # Ice blue
-    elif char in [":", "."]:
+    elif char in ["=", ":"]:
         return "#8b949e"  # Slate gray
+    elif char in ["-", "."]:
+        return "#484f58"  # Dim gray
     return "#30363d"
 
 
 def image_to_ascii(image_path: str, width: int = 85) -> list:
-    """Converts prepped photo to clean ASCII portrait using standard tutorial mapping."""
+    """Converts prepped photo to clean ASCII portrait mapping dark pixels to characters."""
     if not os.path.exists(image_path):
         print(f"Warning: Image '{image_path}' not found. Generating sample avatar pattern.")
         return generate_sample_ascii(width, int(width * 0.52))
@@ -45,15 +48,19 @@ def image_to_ascii(image_path: str, width: int = 85) -> list:
     np_img = np.array(img_resized)
 
     lines = []
-    num_chars = len(ASCII_CHARS)
+    num_ramp = len(ASCII_RAMP)
 
     for y in range(height):
         row = []
         for x in range(width):
             px = np_img[y, x]
-            # Map pixel luminance (0..255) to character index (px // 25)
-            idx = min(px // 25, num_chars - 1)
-            char = ASCII_CHARS[idx]
+            # White background pixels (>= 200) -> blank space ' '
+            if px >= 200:
+                char = " "
+            else:
+                # Map dark feature pixels (0..199) to characters
+                idx = min(int((px / 200.0) * num_ramp), num_ramp - 1)
+                char = ASCII_RAMP[idx]
             row.append(char)
         lines.append(row)
     return lines
@@ -153,11 +160,11 @@ def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(svg_lines))
 
-    print(f"Successfully generated pristine tutorial ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
+    print(f"Successfully generated dark-feature ASCII SVG at '{output_path}' ({svg_width}x{svg_height}px).")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert prepped photo to pristine tutorial animated ASCII SVG")
+    parser = argparse.ArgumentParser(description="Convert prepped photo to dark-feature animated ASCII SVG")
     parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG")
     parser.add_argument("--width", "-w", type=int, default=85, help="Character grid width (~80-90)")
