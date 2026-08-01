@@ -4,7 +4,7 @@
 
 <table border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td valign="top" align="center">
+    <td valign="middle" align="center">
       <img src="./avi-ascii.svg" width="370" alt="ASCII Portrait" />
     </td>
     <td valign="top" align="center">
