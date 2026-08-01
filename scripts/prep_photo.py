@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
 prep_photo.py
-Preprocesses a profile photo for clean ASCII art conversion:
-1. Removes background (via rembg or fallback thresholding).
-2. Applies CLAHE contrast enhancement.
-3. Composites subject onto pure white background.
-4. Auto-crops tightly around HEAD AND SHOULDERS (top ~48% of subject height) so facial details fill the box.
-5. Saves to source-prepped.png.
+Preprocesses profile photo into a high-contrast Black & White prepped image:
+1. Removes background with rembg (or alpha fallback).
+2. Converts to high-contrast grayscale with CLAHE + Adaptive contrast enhancement.
+3. Composites subject onto a pure white (#ffffff) canvas.
+4. Saves to assets/source-prepped.png.
 """
 
 import os
@@ -14,7 +13,7 @@ import sys
 import argparse
 import io
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageEnhance
 import cv2
 
 try:
@@ -25,7 +24,7 @@ except ImportError:
 
 
 def remove_background(image_bytes: bytes) -> Image.Image:
-    """Removes image background using rembg if available, or returns transparent background PIL Image."""
+    """Removes image background using rembg if available."""
     if REMBG_AVAILABLE:
         try:
             print("Removing background with rembg...")
@@ -34,18 +33,22 @@ def remove_background(image_bytes: bytes) -> Image.Image:
         except Exception as e:
             print(f"Warning: rembg failed ({e}), falling back to standard image processing.")
 
-    # Fallback if rembg fails or isn't installed
     img = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
     return img
 
 
-def apply_clahe(gray_img: np.ndarray, clip_limit: float = 3.0, tile_grid_size: tuple = (8, 8)) -> np.ndarray:
-    """Applies Contrast Limited Adaptive Histogram Equalization to grayscale numpy image."""
-    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
-    return clahe.apply(gray_img)
+def enhance_black_and_white(gray_np: np.ndarray, clip_limit: float = 3.5) -> np.ndarray:
+    """Applies CLAHE + high-contrast Black & White feature separation."""
+    # Adaptive histogram equalization
+    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=(8, 8))
+    equalized = clahe.apply(gray_np)
+
+    # Edge-preserving bilateral smoothing to keep glasses/eyes/mustache crisp
+    filtered = cv2.bilateralFilter(equalized, d=7, sigmaColor=50, sigmaSpace=50)
+    return filtered
 
 
-def process_image(input_path: str, output_path: str, clip_limit: float = 3.0):
+def process_image(input_path: str, output_path: str):
     if not os.path.exists(input_path):
         print(f"Error: Input file '{input_path}' does not exist.")
         sys.exit(1)
@@ -54,57 +57,45 @@ def process_image(input_path: str, output_path: str, clip_limit: float = 3.0):
     with open(input_path, "rb") as f:
         img_bytes = f.read()
 
-    # Step 1: Remove Background
+    # Step 1: Remove background
     rgba_img = remove_background(img_bytes)
+
+    # Step 2: Separate RGB and Alpha mask
     np_rgba = np.array(rgba_img)
-
     rgb = np_rgba[:, :, :3]
-    alpha = np_rgba[:, :, 3] if np_rgba.shape[2] == 4 else np.ones((np_rgba.shape[0], np_rgba.shape[1]), dtype=np.uint8) * 255
+    alpha = np_rgba[:, :, 3]
 
-    # Step 2: Convert to Grayscale & Apply CLAHE Contrast Boost
+    # Convert RGB to Grayscale
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
-    clahe_gray = apply_clahe(gray, clip_limit=clip_limit)
 
-    # Step 3: Composite onto pure white background
-    white_bg = np.ones_like(clahe_gray) * 255
-    alpha_factor = alpha.astype(float) / 255.0
+    # Step 3: Apply B&W enhancement
+    bw_enhanced = enhance_black_and_white(gray)
 
-    final_gray = (clahe_gray * alpha_factor + white_bg * (1.0 - alpha_factor)).astype(np.uint8)
+    # Boost contrast on PIL image
+    pil_bw = Image.fromarray(bw_enhanced)
+    pil_bw = ImageEnhance.Contrast(pil_bw).enhance(1.5)
+    pil_bw = ImageEnhance.Sharpness(pil_bw).enhance(1.6)
+    bw_enhanced = np.array(pil_bw)
 
-    # Step 4: Tight Head & Shoulders Crop (top ~48% of subject height)
-    non_white_mask = final_gray < 245
-    if np.any(non_white_mask):
-        y_indices, x_indices = np.where(non_white_mask)
-        ymin, ymax = y_indices.min(), y_indices.max()
-        xmin, xmax = x_indices.min(), x_indices.max()
+    # Step 4: Composite subject onto pure white (#ffffff / 255) background using Alpha mask
+    output_np = np.ones_like(bw_enhanced) * 255
+    mask = alpha > 30
+    output_np[mask] = bw_enhanced[mask]
 
-        # Head & shoulders range
-        subj_h = ymax - ymin
-        crop_ymax = min(final_gray.shape[0], ymin + int(subj_h * 0.48))
-        crop_ymin = max(0, ymin - int(subj_h * 0.02))
-
-        pad_x = int((xmax - xmin) * 0.03)
-        crop_xmin = max(0, xmin - pad_x)
-        crop_xmax = min(final_gray.shape[1], xmax + pad_x)
-
-        final_gray = final_gray[crop_ymin:crop_ymax, crop_xmin:crop_xmax]
-
-    # Save processed result
-    res_img = Image.fromarray(final_gray, mode="L")
-    res_img.save(output_path)
-    print(f"Successfully saved Head & Shoulders prepped image to '{output_path}'.")
+    # Step 5: Save prepped photo
+    out_img = Image.fromarray(output_np)
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    out_img.save(output_path)
+    print(f"Successfully saved high-contrast prepped image to '{output_path}'.")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Prep photo for ASCII conversion (Head & Shoulders crop + CLAHE)")
+    parser = argparse.ArgumentParser(description="Preprocess photo into high-contrast B&W prepped image")
     parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to input photo")
-    parser.add_argument("--output", "-o", default="assets/source-prepped.png", help="Path to output prepped photo")
-    parser.add_argument("--clip-limit", type=float, default=3.0, help="CLAHE contrast clip limit")
+    parser.add_argument("--output", "-o", default="assets/source-prepped.png", help="Path to output image")
 
     args = parser.parse_args()
-
-    os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
-    process_image(args.input, args.output, args.clip_limit)
+    process_image(args.input, args.output)
 
 
 if __name__ == "__main__":
