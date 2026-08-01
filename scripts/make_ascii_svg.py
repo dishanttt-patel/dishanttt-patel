@@ -148,8 +148,8 @@ def render_ascii_svg(lines: list, output_path: str, font_size: float = 5.5, line
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert full photo to clean animated ASCII SVG")
-    parser.add_argument("--input", "-i", default="assets/input_photo.png", help="Path to input photo")
+    parser = argparse.ArgumentParser(description="Convert prepped photo to clean animated ASCII SVG")
+    parser.add_argument("--input", "-i", default="assets/source-prepped.png", help="Path to prepped photo")
     parser.add_argument("--output", "-o", default="avi-ascii.svg", help="Path to output SVG")
     parser.add_argument("--width", "-w", type=int, default=85, help="Character grid width (~85)")
 
