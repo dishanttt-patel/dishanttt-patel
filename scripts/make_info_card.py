@@ -12,7 +12,7 @@ import argparse
 import html
 
 CARD_WIDTH = 490
-CARD_HEIGHT = 450
+CARD_HEIGHT = 500
 
 
 def generate_info_card_svg(output_path: str, static_mode: bool = False, username: str = "DISHANT"):
