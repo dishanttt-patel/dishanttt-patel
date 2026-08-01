@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
 tune_ascii.py
-Generates 3 distinct high-quality ASCII portrait variants from source-prepped.png:
-1. Sharp Outlines (avi-ascii-sharp.svg)
-2. Soft Photorealistic Shading (avi-ascii-soft.svg) - Upgraded with High-Detail Soft Ramp
-3. High-Definition Grid (avi-ascii-hd.svg)
+Generates 4 distinct state-of-the-art ASCII portrait techniques from source-prepped.png:
+1. Atkinson Dithering (avi-ascii-atkinson.svg) - Classic Mac OS stippled dithering
+2. Directional Sobel Contour Mapping (avi-ascii-sobel.svg) - Structural stroke-mapped ASCII art
+3. Floyd-Steinberg Dithering (avi-ascii-floyd.svg) - Smooth error diffusion dithering
+4. Sharp Outlines (avi-ascii-sharp.svg) - High-contrast edge outlines
 """
 
 import os
@@ -12,28 +13,23 @@ import sys
 import html
 import cv2
 import numpy as np
-from PIL import Image, ImageEnhance, ImageOps
+from PIL import Image
 
-# SVG styling helper
-def render_svg(lines: list, output_path: str, font_size: float = 4.6, line_height: float = 6.0):
+def render_svg(lines: list, output_path: str, font_size: float = 5.0, line_height: float = 6.4):
     num_rows = len(lines)
     svg_width = 370
     svg_height = max(500, int(num_rows * line_height) + 24)
     start_y = 18
 
     def get_color(char):
-        if char in ["@", "#", "$", "B", "%", "8", "&", "W", "M"]:
-            return "#ffffff"  # Bright white for dark features / frames
-        elif char in ["*", "o", "a", "h", "k", "b", "d", "p", "q", "w", "m"]:
+        if char in ["@", "#", "B", "%", "8", "|", "/", "\\", "-"]:
+            return "#ffffff"  # Bright white for structural features & outlines
+        elif char in ["$", "&", "*", "+"]:
             return "#79c0ff"  # Bright cyan
-        elif char in ["Z", "O", "0", "Q", "L", "C", "J", "U", "Y", "X", "z", "c"]:
+        elif char in ["=", "i", "!"]:
             return "#58a6ff"  # Primary blue
-        elif char in ["v", "u", "x", "r", "j", "f", "t", "/", "\\", "|", "(", ")", "1"]:
-            return "#a5d6ff"  # Soft ice blue
-        elif char in ["{", "}", "[", "]", "?", "-", "_", "+", "~", "<", ">", "i", "!", "l", "I"]:
-            return "#8b949e"  # Slate gray skin tone
-        elif char in [";", ":", ",", "\"", "^", "`", ".", "'"]:
-            return "#484f58"  # Dim gray
+        elif char in [":", "."]:
+            return "#8b949e"  # Slate gray
         return "#30363d"
 
     svg_lines = [
@@ -50,8 +46,8 @@ def render_svg(lines: list, output_path: str, font_size: float = 4.6, line_heigh
         clip_id = f"clip-row-{i}"
         row_y = start_y + (i * line_height) - font_size
         row_h = line_height + 2
-        delay = round(i * 0.03, 3)
-        anim_dur = round(0.03 * 1.5, 3)
+        delay = round(i * 0.035, 3)
+        anim_dur = round(0.035 * 1.5, 3)
 
         svg_lines.append(f'    <clipPath id="{clip_id}">')
         svg_lines.append(f'      <rect x="8" y="{row_y:.1f}" width="0" height="{row_h:.1f}">')
@@ -89,68 +85,83 @@ def render_svg(lines: list, output_path: str, font_size: float = 4.6, line_heigh
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(svg_lines))
-    print(f"Generated variant: '{output_path}'")
+    print(f"Generated technique: '{output_path}'")
 
 
-def make_sharp_variant(img_path: str, output_path: str):
-    """Sharp Outlines Variant: Boosts contrast to define crisp facial edges."""
-    img = Image.open(img_path).convert("L")
-    img = ImageEnhance.Contrast(img).enhance(1.8)
-    img = ImageEnhance.Sharpness(img).enhance(2.0)
-
-    w = 95
-    h = int(w * (img.height / img.width) * 0.52)
-    resized = img.resize((w, h), Image.Resampling.LANCZOS)
-    arr = np.array(resized)
-
-    ramp = [" ", ".", "-", ":", "=", "+", "*", "%", "$", "#", "@"]
-    lines = []
-    for row in arr:
-        lines.append([" " if px >= 245 else ramp[min(int((px / 244.0) * 10), 10)] for px in row])
-    render_svg(lines, output_path, font_size=5.5, line_height=7.0)
-
-
-def make_soft_variant(img_path: str, output_path: str):
-    """Soft Photorealistic Variant (High Detail): Uses bilateral filtering + 60-level smooth density ramp."""
+def make_atkinson_variant(img_path: str, output_path: str):
+    """Technique 1: Atkinson Dithering (Classic Mac OS Stippling)"""
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-    if img is None:
-        pil_img = Image.open(img_path).convert("L")
-        img = np.array(pil_img)
+    w = 90
+    h = int(w * (img.shape[0] / img.shape[1]) * 0.52)
+    resized = cv2.resize(img, (w, h), interpolation=cv2.INTER_LANCZOS4)
 
-    # Soft bilateral filtering to smooth skin while keeping glasses/eyes/mustache sharp
-    filt = cv2.bilateralFilter(img, d=9, sigmaColor=75, sigmaSpace=75)
-
-    w = 115  # Upgraded resolution for detailed soft rendering
-    pil_img = Image.fromarray(filt)
-    h = int(w * (pil_img.height / pil_img.width) * 0.52)
-    resized = pil_img.resize((w, h), Image.Resampling.LANCZOS)
-    arr = np.array(resized)
-
-    # High-detail 60-level soft density ramp
-    ramp = list(" $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvuxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
-    num_ramp = len(ramp) - 1
+    dither_arr = resized.astype(float)
+    RAMP = ['@', '#', '$', '%', '&', '*', '+', '=', ':', '.', ' ']
+    num_levels = len(RAMP) - 1
 
     lines = []
-    for row in arr:
-        lines.append([" " if px >= 245 else ramp[min(int((px / 244.0) * num_ramp), num_ramp)] for px in row])
-    render_svg(lines, output_path, font_size=4.6, line_height=6.0)
+    for y in range(h):
+        row = []
+        for x in range(w):
+            old_val = dither_arr[y, x]
+            idx = min(max(int(round((old_val / 255.0) * num_levels)), 0), num_levels)
+            new_val = (idx / float(num_levels)) * 255.0
+            row.append(RAMP[idx])
+            
+            err = (old_val - new_val) / 8.0
+            if x + 1 < w: dither_arr[y, x + 1] += err
+            if x + 2 < w: dither_arr[y, x + 2] += err
+            if y + 1 < h:
+                if x - 1 >= 0: dither_arr[y + 1, x - 1] += err
+                dither_arr[y + 1, x] += err
+                if x + 1 < w: dither_arr[y + 1, x + 1] += err
+            if y + 2 < h:
+                dither_arr[y + 2, x] += err
+        lines.append(row)
+    render_svg(lines, output_path, font_size=5.0, line_height=6.4)
 
 
-def make_hd_variant(img_path: str, output_path: str):
-    """High-Definition 120-Col Grid Variant: Maximum spatial facial detail."""
-    img = Image.open(img_path).convert("L")
-    img = ImageEnhance.Contrast(img).enhance(1.5)
+def make_sobel_variant(img_path: str, output_path: str):
+    """Technique 2: Directional Sobel Contour Mapping"""
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    w = 90
+    h = int(w * (img.shape[0] / img.shape[1]) * 0.52)
+    resized = cv2.resize(img, (w, h), interpolation=cv2.INTER_LANCZOS4)
 
-    w = 120
-    h = int(w * (img.height / img.width) * 0.50)
-    resized = img.resize((w, h), Image.Resampling.LANCZOS)
-    arr = np.array(resized)
+    sobelx = cv2.Sobel(resized, cv2.CV_64F, 1, 0, ksize=3)
+    sobely = cv2.Sobel(resized, cv2.CV_64F, 0, 1, ksize=3)
 
-    ramp = [" ", ".", "-", ":", "=", "+", "*", "%", "$", "#", "@"]
+    magnitude = np.sqrt(sobelx**2 + sobely**2)
+    angle = np.arctan2(sobely, sobelx) * (180 / np.pi) % 180
+
     lines = []
-    for row in arr:
-        lines.append([" " if px >= 245 else ramp[min(int((px / 244.0) * 10), 10)] for px in row])
-    render_svg(lines, output_path, font_size=4.5, line_height=6.0)
+    for y in range(h):
+        row = []
+        for x in range(w):
+            px = resized[y, x]
+            mag = magnitude[y, x]
+            ang = angle[y, x]
+            
+            if px >= 240:
+                row.append(" ")
+            elif mag > 60:
+                if (0 <= ang < 22.5) or (157.5 <= ang <= 180):
+                    row.append("|")
+                elif 22.5 <= ang < 67.5:
+                    row.append("/")
+                elif 67.5 <= ang < 112.5:
+                    row.append("-")
+                else:
+                    row.append("\\")
+            else:
+                if px < 40: row.append("@")
+                elif px < 80: row.append("%")
+                elif px < 120: row.append("#")
+                elif px < 160: row.append("*")
+                elif px < 200: row.append("=")
+                else: row.append(":")
+        lines.append(row)
+    render_svg(lines, output_path, font_size=5.0, line_height=6.4)
 
 
 def main():
@@ -159,12 +170,11 @@ def main():
         print(f"Error: {img_path} not found.")
         sys.exit(1)
 
-    make_sharp_variant(img_path, "avi-ascii-sharp.svg")
-    make_soft_variant(img_path, "avi-ascii-soft.svg")
-    make_hd_variant(img_path, "avi-ascii-hd.svg")
+    make_atkinson_variant(img_path, "avi-ascii-atkinson.svg")
+    make_sobel_variant(img_path, "avi-ascii-sobel.svg")
 
-    # Set default avi-ascii.svg to the detailed soft variant
-    make_soft_variant(img_path, "avi-ascii.svg")
+    # Set main default avi-ascii.svg to Atkinson Dithering technique
+    make_atkinson_variant(img_path, "avi-ascii.svg")
 
 
 if __name__ == "__main__":
