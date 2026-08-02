@@ -5,7 +5,7 @@
 <table border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td valign="middle" align="center">
-      <img src="./avi-ascii_resized.svg" width="550" alt="ASCII Portrait" />
+      <img src="./avi-ascii_resized.svg" width="500" alt="ASCII Portrait" />
     </td>
     <td valign="top" align="center">
       <img src="./info-card.svg" width="490" alt="Neofetch Info Card" />
