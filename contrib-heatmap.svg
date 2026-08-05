@@ -413,9 +413,10 @@
     <rect class="cell cell-anim" x="773.0" y="52.0" width="10.5" height="10.5" fill="#39d353" style="animation-delay: 0.78s;"><title>18 contributions on 2026-08-02</title></rect>
     <rect class="cell cell-anim" x="773.0" y="66.0" width="10.5" height="10.5" fill="#39d353" style="animation-delay: 0.79s;"><title>18 contributions on 2026-08-03</title></rect>
     <rect class="cell cell-anim" x="773.0" y="80.0" width="10.5" height="10.5" fill="#161b22" style="animation-delay: 0.8s;"><title>0 contributions on 2026-08-04</title></rect>
+    <rect class="cell cell-anim" x="773.0" y="94.0" width="10.5" height="10.5" fill="#161b22" style="animation-delay: 0.81s;"><title>0 contributions on 2026-08-05</title></rect>
     <text x="45" y="172.0" class="footer-text">
       <tspan class="highlight">64</tspan> contributions in the last year
-      <tspan fill="#8b949e"> | Streak: </tspan><tspan fill="#7ee787">3 days</tspan>
+      <tspan fill="#8b949e"> | Streak: </tspan><tspan fill="#7ee787">0 days</tspan>
       <tspan fill="#8b949e"> (Max: 3 days)</tspan>
     </text>
     <g transform="translate(705, 162.0)">
